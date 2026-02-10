@@ -1,0 +1,72 @@
+/* Custom branding for OpenClaw translated docs */
+/* Color scheme matched to blog.law-kelly.com */
+
+/* Override Material theme colors to match blog palette */
+:root {
+  --md-primary-fg-color: #1A2E20;
+  --md-primary-fg-color--light: #2E4A3A;
+  --md-primary-fg-color--dark: #0F1D14;
+  --md-accent-fg-color: #0645AD;
+  --md-accent-fg-color--transparent: rgba(6, 69, 173, 0.1);
+}
+
+/* Dark mode overrides */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #1A2E20;
+  --md-primary-fg-color--light: #2E4A3A;
+  --md-accent-fg-color: #5B9BD5;
+}
+
+/* Header bar */
+.md-header {
+  background-color: #1A2E20;
+}
+
+/* Navigation tabs */
+.md-tabs {
+  background-color: #2E4A3A;
+}
+
+/* Links match blog blue */
+.md-content a {
+  color: #0645AD;
+}
+
+.md-content a:hover {
+  color: #0B0080;
+}
+
+/* Language selector styling */
+.md-select__inner {
+  max-height: 400px;
+}
+
+/* Announcement bar - forest green */
+.md-announce {
+  font-size: 0.75rem;
+  background-color: #2E4A3A;
+  color: #ffffff;
+}
+.md-announce a {
+  color: #A9B8A1;
+}
+
+/* Footer matches blog dark green */
+.md-footer {
+  background-color: #1A2E20;
+}
+
+/* Footer links */
+.md-footer-meta a {
+  color: #A9B8A1;
+}
+
+/* Sidebar active item */
+.md-nav__link--active {
+  color: #0645AD;
+}
+
+/* RTL support for Arabic and Urdu */
+[dir="rtl"] .md-content {
+  text-align: right;
+}

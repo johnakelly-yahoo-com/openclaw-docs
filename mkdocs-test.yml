@@ -1,0 +1,79 @@
+site_name: "OpenClaw Documentation"
+site_description: "OpenClaw documentation in 22 languages"
+site_url: "https://www.law-kelly.com/openclaw-docs/"
+site_author: "John Kelly"
+
+docs_dir: "/Users/john_a_kelly/Library/CloudStorage/Dropbox/Clients/N.9031 Newspapers Purchase/08 OpenClaw Docs Localization/repo/docs"
+
+theme:
+  name: material
+  language: en
+  custom_dir: overrides
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    logo: material/translate
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - toc.follow
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: folder
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: ja
+          name: 日本語
+          build: true
+        - locale: es
+          name: Español
+          build: true
+
+hooks:
+  - hooks/fix_image_paths.py
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+  - attr_list
+  - tables
+
+extra:
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: >
+  Community translations maintained by
+  <a href="https://www.law-kelly.com">John Kelly</a>.
+  Improve translations on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.

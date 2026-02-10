@@ -1,0 +1,170 @@
+site_name: "OpenClaw Documentation"
+site_description: "OpenClaw documentation in 22 languages"
+site_url: "https://www.law-kelly.com/openclaw-docs/"
+site_author: "John Kelly"
+
+# Point to the existing docs directory
+docs_dir: "/Users/john_a_kelly/Library/CloudStorage/Dropbox/Clients/N.9031 Newspapers Purchase/08 OpenClaw Docs Localization/repo/docs"
+
+theme:
+  name: material
+  language: en
+  custom_dir: overrides
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    logo: material/translate
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - toc.follow
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: folder
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: ja
+          name: 日本語
+          build: true
+          nav_translations:
+            Home: ホーム
+        - locale: ko
+          name: 한국어
+          build: true
+          nav_translations:
+            Home: 홈
+        - locale: zh-TW
+          name: 繁體中文
+          build: true
+          nav_translations:
+            Home: 首頁
+        - locale: zh-CN
+          name: 简体中文
+          build: true
+          nav_translations:
+            Home: 首页
+        - locale: es
+          name: Español
+          build: true
+          nav_translations:
+            Home: Inicio
+        - locale: fr
+          name: Français
+          build: true
+          nav_translations:
+            Home: Accueil
+        - locale: de
+          name: Deutsch
+          build: true
+          nav_translations:
+            Home: Startseite
+        - locale: pt-BR
+          name: Português (Brasil)
+          build: true
+          nav_translations:
+            Home: Início
+        - locale: vi
+          name: Tiếng Việt
+          build: true
+        - locale: sv
+          name: Svenska
+          build: true
+        - locale: fil
+          name: Filipino
+          build: true
+        - locale: nl
+          name: Nederlands
+          build: true
+        - locale: ur
+          name: اردو
+          build: true
+        - locale: ar
+          name: العربية
+          build: true
+        - locale: hi
+          name: हिन्दी
+          build: true
+        - locale: da
+          name: Dansk
+          build: true
+        - locale: pl
+          name: Polski
+          build: true
+        - locale: th
+          name: ไทย
+          build: true
+        - locale: tr
+          name: Türkçe
+          build: true
+        - locale: my
+          name: မြန်မာ
+          build: true
+        - locale: ru
+          name: Русский
+          build: true
+        - locale: uz
+          name: O'zbek
+          build: true
+
+hooks:
+  - hooks/fix_image_paths.py
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - tables
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/openclaw/openclaw
+    - icon: material/translate
+      link: https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: >
+  Community translations maintained by
+  <a href="https://www.law-kelly.com">John Kelly</a>.
+  Improve translations on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.
