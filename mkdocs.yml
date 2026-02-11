@@ -44,7 +44,7 @@ plugins:
   - i18n:
       docs_structure: folder
       fallback_to_default: true
-      reconfigure_material: true
+      reconfigure_material: false
       languages:
         - locale: en
           default: true
