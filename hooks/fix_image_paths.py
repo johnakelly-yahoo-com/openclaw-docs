@@ -316,9 +316,22 @@ summary: "OpenClaw is a multi-channel gateway for AI agents that runs on any OS.
 title: "OpenClaw Documentation"
 ---
 
-# OpenClaw Documentation
+<p align="center">
+    <img
+        src="/assets/opendocs-logo-light.png"
+        alt="OpenDocs"
+        width="600"
+        class="dark-hidden"
+    />
+    <img
+        src="/assets/opendocs-logo-dark.png"
+        alt="OpenDocs"
+        width="600"
+        class="light-hidden"
+    />
+</p>
 
-**Community translations in 22 languages, maintained on [Crowdin](https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17).**
+<p align="center"><strong>Community translations in 22 languages, maintained on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.</strong></p>
 
 ---
 
@@ -348,6 +361,10 @@ flowchart LR
 ```
 
 The Gateway is the single source of truth for sessions, routing, and channel connections.
+
+<p align="center">
+    <img src="/assets/opendocs-pipeline.png" alt="How OpenDocs Works" width="800" />
+</p>
 
 ## Quick start
 
@@ -401,6 +418,12 @@ Config lives at `~/.openclaw/openclaw.json`.
   messages: { groupChat: { mentionPatterns: ["@openclaw"] } },
 }
 ```
+
+## Documentation in your language
+
+<p align="center">
+    <img src="/assets/opendocs-languages.png" alt="Documentation in 22 Languages" width="800" />
+</p>
 
 ## Browse the documentation
 

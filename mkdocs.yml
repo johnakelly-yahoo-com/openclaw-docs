@@ -27,8 +27,8 @@ theme:
   font:
     text: Inter
     code: JetBrains Mono
-  icon:
-    logo: material/translate
+  logo: assets/sage-icon.png
+  favicon: assets/sage-icon.png
   features:
     - navigation.tabs
     - navigation.sections

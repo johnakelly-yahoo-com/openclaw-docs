@@ -100,8 +100,24 @@
   color: #0645AD;
 }
 
-/* Light/dark mode logo toggle (OpenClaw uses Tailwind classes) */
-/* Light mode: show dark logo, hide light logo */
+/* Light/dark mode logo toggle for OpenDocs homepage */
+/* Light mode: show light logo, hide dark logo */
+[data-md-color-scheme="default"] img.dark-hidden {
+  display: inline !important;
+}
+[data-md-color-scheme="default"] img.light-hidden {
+  display: none !important;
+}
+
+/* Dark mode: hide light logo, show dark logo */
+[data-md-color-scheme="slate"] img.dark-hidden {
+  display: none !important;
+}
+[data-md-color-scheme="slate"] img.light-hidden {
+  display: inline !important;
+}
+
+/* Also keep support for legacy OpenClaw Tailwind classes (translated pages) */
 [data-md-color-scheme="default"] img.dark\:hidden,
 [data-md-color-scheme="default"] .dark\:hidden {
   display: inline !important;
@@ -110,8 +126,6 @@
 [data-md-color-scheme="default"] .hidden.dark\:block {
   display: none !important;
 }
-
-/* Dark mode: hide dark logo, show light logo */
 [data-md-color-scheme="slate"] img.dark\:hidden,
 [data-md-color-scheme="slate"] .dark\:hidden {
   display: none !important;
@@ -119,6 +133,18 @@
 [data-md-color-scheme="slate"] img.hidden.dark\:block,
 [data-md-color-scheme="slate"] .hidden.dark\:block {
   display: inline !important;
+}
+
+/* Homepage pipeline and language card graphics */
+.md-content img[alt="How OpenDocs Works"],
+.md-content img[alt="Documentation in 22 Languages"] {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+[data-md-color-scheme="slate"] .md-content img[alt="How OpenDocs Works"],
+[data-md-color-scheme="slate"] .md-content img[alt="Documentation in 22 Languages"] {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* RTL support for Arabic and Urdu */
