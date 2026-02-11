@@ -1,30 +1,52 @@
 /* Custom branding for OpenClaw translated docs */
 /* Color scheme matched to blog.law-kelly.com */
 
-/* Override Material theme colors to match blog palette */
+/* Blog palette reference:
+   #1A2E20 - darkest green (blog background)
+   #2E4A3A - medium green
+   #A9B8A1 - sage green (light)
+   #0645AD - blue (links)
+   #0B0080 - dark blue (visited)
+   #E0E0E0 - light gray
+*/
+
+/* Override Material theme colors */
 :root {
-  --md-primary-fg-color: #1A2E20;
-  --md-primary-fg-color--light: #2E4A3A;
-  --md-primary-fg-color--dark: #0F1D14;
+  --md-primary-fg-color: #2E4A3A;
+  --md-primary-fg-color--light: #A9B8A1;
+  --md-primary-fg-color--dark: #1A2E20;
   --md-accent-fg-color: #0645AD;
   --md-accent-fg-color--transparent: rgba(6, 69, 173, 0.1);
 }
 
 /* Dark mode overrides */
 [data-md-color-scheme="slate"] {
-  --md-primary-fg-color: #1A2E20;
-  --md-primary-fg-color--light: #2E4A3A;
+  --md-primary-fg-color: #2E4A3A;
+  --md-primary-fg-color--light: #A9B8A1;
   --md-accent-fg-color: #5B9BD5;
 }
 
-/* Header bar */
+/* Header bar - medium green, white text readable */
 .md-header {
-  background-color: #1A2E20;
+  background-color: #2E4A3A;
 }
 
-/* Navigation tabs */
+/* Header links and icons - white for visibility */
+.md-header a,
+.md-header .md-header__title {
+  color: #ffffff;
+}
+
+/* Navigation tabs - sage green, dark text */
 .md-tabs {
-  background-color: #2E4A3A;
+  background-color: #A9B8A1;
+}
+.md-tabs a {
+  color: #1A2E20;
+}
+.md-tabs a:hover,
+.md-tabs .md-tabs__link--active {
+  color: #000000;
 }
 
 /* Links match blog blue */
@@ -36,22 +58,34 @@
   color: #0B0080;
 }
 
-/* Language selector styling */
+/* Language selector dropdown */
 .md-select__inner {
   max-height: 400px;
+  background-color: #ffffff;
+}
+.md-select__inner a {
+  color: #1A2E20 !important;
+}
+.md-select__inner a:hover {
+  color: #0645AD !important;
+  background-color: #f0f0f0;
 }
 
-/* Announcement bar - forest green */
-.md-announce {
+/* Announcement bar */
+.md-banner {
+  background-color: #2E4A3A !important;
+  color: #E0E0E0 !important;
+}
+.md-banner .md-banner__inner {
   font-size: 0.75rem;
-  background-color: #2E4A3A;
-  color: #ffffff;
+  color: #E0E0E0 !important;
 }
-.md-announce a {
-  color: #A9B8A1;
+.md-banner a,
+.md-banner .md-banner__inner a {
+  color: #A9B8A1 !important;
 }
 
-/* Footer matches blog dark green */
+/* Footer - darkest green */
 .md-footer {
   background-color: #1A2E20;
 }
@@ -64,6 +98,27 @@
 /* Sidebar active item */
 .md-nav__link--active {
   color: #0645AD;
+}
+
+/* Light/dark mode logo toggle (OpenClaw uses Tailwind classes) */
+/* Light mode: show dark logo, hide light logo */
+[data-md-color-scheme="default"] img.dark\:hidden,
+[data-md-color-scheme="default"] .dark\:hidden {
+  display: inline !important;
+}
+[data-md-color-scheme="default"] img.hidden.dark\:block,
+[data-md-color-scheme="default"] .hidden.dark\:block {
+  display: none !important;
+}
+
+/* Dark mode: hide dark logo, show light logo */
+[data-md-color-scheme="slate"] img.dark\:hidden,
+[data-md-color-scheme="slate"] .dark\:hidden {
+  display: none !important;
+}
+[data-md-color-scheme="slate"] img.hidden.dark\:block,
+[data-md-color-scheme="slate"] .hidden.dark\:block {
+  display: inline !important;
 }
 
 /* RTL support for Arabic and Urdu */

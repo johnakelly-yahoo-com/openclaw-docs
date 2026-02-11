@@ -1,0 +1,151 @@
+---
+summary: "Архитектура WebSocket‑шлюза, компоненты и клиентские потоки"
+read_when:
+  - При работе над протоколом шлюза, клиентами или транспортами
+title: "Архитектура Gateway"
+---
+
+# Архитектура Gateway
+
+Последнее обновление: 2026-01-22
+
+## Обзор
+
+- Один долгоживущий **Gateway (шлюз)** владеет всеми поверхностями обмена сообщениями (WhatsApp через
+  Baileys, Telegram через grammY, Slack, Discord, Signal, iMessage, WebChat).
+- Клиенты плоскости управления (приложение для macOS, CLI, веб‑интерфейс, автоматизации) подключаются к
+  Gateway по **WebSocket** на настроенном хосте привязки (по умолчанию
+  `127.0.0.1:18789`).
+- **Узлы** (macOS/iOS/Android/headless) также подключаются по **WebSocket**, но
+  объявляют `role: node` с явными возможностями/командами.
+- Один Gateway на хост; это единственное место, где открывается сессия WhatsApp.
+- **Хост canvas** (по умолчанию `18793`) обслуживает редактируемый агентом HTML и A2UI.
+
+## Компоненты и потоки
+
+### Gateway (демон)
+
+- Поддерживает подключения к провайдерам.
+- Предоставляет типизированный WS API (запросы, ответы, серверные push‑события).
+- Валидирует входящие фреймы по JSON Schema.
+- Генерирует события, такие как `agent`, `chat`, `presence`, `health`, `heartbeat`, `cron`.
+
+### Клиенты (приложение для macOS / CLI / веб‑админка)
+
+- Одно WS‑подключение на клиент.
+- Отправляют запросы (`health`, `status`, `send`, `agent`, `system-presence`).
+- Подписываются на события (`tick`, `agent`, `presence`, `shutdown`).
+
+### Узлы (macOS / iOS / Android / headless)
+
+- Подключаются к **тому же WS‑серверу** с `role: node`.
+- Предоставляют идентичность устройства в `connect`; сопряжение является **устройственно‑ориентированным** (роль `node`), а
+  подтверждение хранится в хранилище сопряжений устройств.
+- Экспортируют команды, такие как `canvas.*`, `camera.*`, `screen.record`, `location.get`.
+
+Подробности протокола:
+
+- [Gateway protocol](/gateway/protocol)
+
+### WebChat
+
+- Статический UI, который использует WS API Gateway для истории чатов и отправки сообщений.
+- В удалённых конфигурациях подключается через тот же SSH/Tailscale‑туннель, что и другие
+  клиенты.
+
+## Жизненный цикл подключения (один клиент)
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#000000',
+    'primaryBorderColor': '#000000',
+    'lineColor': '#000000',
+    'secondaryColor': '#f9f9fb',
+    'tertiaryColor': '#ffffff',
+    'clusterBkg': '#f9f9fb',
+    'clusterBorder': '#000000',
+    'nodeBorder': '#000000',
+    'mainBkg': '#ffffff',
+    'edgeLabelBackground': '#ffffff'
+  }
+}}%%
+sequenceDiagram
+    participant Client
+    participant Gateway
+
+    Client->>Gateway: req:connect
+    Gateway-->>Client: res (ok)
+    Note right of Gateway: or res error + close
+    Note left of Client: payload=hello-ok<br>snapshot: presence + health
+
+    Gateway-->>Client: event:presence
+    Gateway-->>Client: event:tick
+
+    Client->>Gateway: req:agent
+    Gateway-->>Client: res:agent<br>ack {runId, status:"accepted"}
+    Gateway-->>Client: event:agent<br>(streaming)
+    Gateway-->>Client: res:agent<br>final {runId, status, summary}
+```
+
+## Проводной протокол (кратко)
+
+- Транспорт: WebSocket, текстовые фреймы с JSON‑полезной нагрузкой.
+- Первый фрейм **обязательно** должен быть `connect`.
+- После рукопожатия:
+  - Запросы: `{type:"req", id, method, params}` → `{type:"res", id, ok, payload|error}`
+  - События: `{type:"event", event, payload, seq?, stateVersion?}`
+- Если задано `OPENCLAW_GATEWAY_TOKEN` (или `--token`), `connect.params.auth.token`
+  должен совпадать, иначе сокет закрывается.
+- Ключи идемпотентности обязательны для методов с побочными эффектами (`send`, `agent`) для
+  безопасных повторных попыток; сервер хранит краткоживущий кеш дедупликации.
+- Узлы должны включать `role: "node"` плюс возможности/команды/права в `connect`.
+
+## Сопряжение + локальное доверие
+
+- Все WS‑клиенты (операторы + узлы) включают **идентичность устройства** в `connect`.
+- Новые идентификаторы устройств требуют одобрения сопряжения; Gateway выдаёт **токен устройства**
+  для последующих подключений.
+- **Локальные** подключения (loopback или собственный tailnet‑адрес хоста шлюза) могут
+  автоматически одобряться, чтобы сохранить плавный UX на одном хосте.
+- **Нелокальные** подключения должны подписывать nonce `connect.challenge` и требуют
+  явного одобрения.
+- Аутентификация Gateway (`gateway.auth.*`) по‑прежнему применяется ко **всем** подключениям, локальным и
+  удалённым.
+
+Подробности: [Gateway protocol](/gateway/protocol), [Pairing](/channels/pairing),
+[Security](/gateway/security).
+
+## Типизация протокола и codegen
+
+- Схемы TypeBox определяют протокол.
+- JSON Schema генерируется из этих схем.
+- Модели Swift генерируются из JSON Schema.
+
+## Удалённый доступ
+
+- Предпочтительно: Tailscale или VPN.
+
+- Альтернатива: SSH‑туннель
+
+  ```bash
+  ssh -N -L 18789:127.0.0.1:18789 user@host
+  ```
+
+- То же рукопожатие и токен аутентификации применяются поверх туннеля.
+
+- TLS + необязательное пиннинг‑закрепление могут быть включены для WS в удалённых конфигурациях.
+
+## Снимок операций
+
+- Запуск: `openclaw gateway` (в фоне, логи в stdout).
+- Здоровье: `health` по WS (также включено в `hello-ok`).
+- Надзор: launchd/systemd для авто‑перезапуска.
+
+## Неварианты
+
+- Ровно один Gateway управляет одной сессией Baileys на хост.
+- Рукопожатие обязательно; любой первый фрейм, не являющийся JSON или connect, приводит к жёсткому закрытию.
+- События не переигрываются; при разрывах клиенты должны обновляться.

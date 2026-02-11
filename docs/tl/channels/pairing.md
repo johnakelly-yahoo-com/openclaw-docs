@@ -1,0 +1,103 @@
+---
+summary: "Pangkalahatang-ideya ng pairing: aprubahan kung sino ang puwedeng mag-DM sa iyo + kung aling mga node ang puwedeng sumali"
+read_when:
+  - Pagse-setup ng kontrol sa access ng DM
+  - Pag-pair ng bagong iOS/Android node
+  - Pagrerepaso ng security posture ng OpenClaw
+title: "Pairing"
+---
+
+# Pairing
+
+21. Ang “Pairing” ay ang tahasang hakbang ng **pag-apruba ng may-ari** ng OpenClaw.
+    Ginagamit ito sa dalawang lugar:
+
+1. **DM pairing** (sino ang pinapayagang makipag-usap sa bot)
+2. **Node pairing** (kung aling mga device/node ang pinapayagang sumali sa Gateway network)
+
+Konteksto ng seguridad: [Security](/gateway/security)
+
+## 1. DM pairing (inbound chat access)
+
+Kapag ang isang channel ay naka-configure gamit ang DM policy na `pairing`, ang mga hindi kilalang sender ay makakatanggap ng maikling code at ang kanilang mensahe ay **hindi ipo-process** hangga’t hindi mo inaaprubahan.
+
+Ang mga default na DM policy ay naka-dokumento sa: [Security](/gateway/security)
+
+Mga pairing code:
+
+- 8 character, uppercase, walang mga nakalilitong character (`0O1I`).
+- 23. **Mag-e-expire pagkalipas ng 1 oras**. 24. Ipinapadala lamang ng bot ang pairing message kapag may bagong request na nalikha (humigit-kumulang isang beses kada oras bawat sender).
+- Ang mga pending na DM pairing request ay may limit na **3 kada channel** bilang default; ang mga karagdagang request ay binabalewala hanggang may mag-expire o maaprubahan.
+
+### Aprubahan ang isang sender
+
+```bash
+openclaw pairing list telegram
+openclaw pairing approve telegram <CODE>
+```
+
+Mga suportadong channel: `telegram`, `whatsapp`, `signal`, `imessage`, `discord`, `slack`.
+
+### Saan nakaimbak ang estado
+
+Naka-store sa ilalim ng `~/.openclaw/credentials/`:
+
+- Mga pending na request: `<channel>-pairing.json`
+- Approved allowlist store: `<channel>-allowFrom.json`
+
+Ituring ang mga ito bilang sensitibo (sila ang nagba-block o nagpapahintulot ng access sa iyong assistant).
+
+## 2. Node device pairing (iOS/Android/macOS/headless nodes)
+
+25. Kumokonekta ang mga node sa Gateway bilang mga **device** na may `role: node`. 26. Ang Gateway ay
+    lumilikha ng device pairing request na kailangang aprubahan.
+
+### Ipares sa pamamagitan ng Telegram (inirerekomenda para sa iOS)
+
+Kung gagamitin mo ang `device-pair` plugin, maaari mong gawin ang unang beses na pag-pair ng device nang buo mula sa Telegram:
+
+1. Sa Telegram, i-message ang iyong bot: `/pair`
+2. Sumasagot ang bot ng dalawang mensahe: isang mensahe ng tagubilin at isang hiwalay na mensahe ng **setup code** (madaling kopyahin/i-paste sa Telegram).
+3. Sa iyong telepono, buksan ang OpenClaw iOS app → Settings → Gateway.
+4. I-paste ang setup code at kumonekta.
+5. Bumalik sa Telegram: `/pair approve`
+
+Ang setup code ay isang base64-encoded na JSON payload na naglalaman ng:
+
+- `url`: ang Gateway WebSocket URL (`ws://...` o `wss://...`)
+- `token`: isang panandaliang pairing token
+
+Ituring ang setup code na parang password habang ito ay balido.
+
+### Aprubahan ang isang node device
+
+```bash
+openclaw devices list
+openclaw devices approve <requestId>
+openclaw devices reject <requestId>
+```
+
+### Imbakan ng estado ng node pairing
+
+Naka-store sa ilalim ng `~/.openclaw/devices/`:
+
+- `pending.json` (panandalian; nag-e-expire ang mga pending na request)
+- `paired.json` (mga naka-pair na device + mga token)
+
+### Mga tala
+
+- 27. Ang legacy na `node.pair.*` API (CLI: `openclaw nodes pending/approve`) ay isang
+      hiwalay na gateway-owned pairing store. Ang mga WS node ay nangangailangan pa rin ng device pairing.
+
+## Kaugnay na docs
+
+- Security model + prompt injection: [Security](/gateway/security)
+- Ligtas na pag-update (run doctor): [Updating](/install/updating)
+- Mga config ng channel:
+  - Telegram: [Telegram](/channels/telegram)
+  - WhatsApp: [WhatsApp](/channels/whatsapp)
+  - Signal: [Signal](/channels/signal)
+  - BlueBubbles (iMessage): [BlueBubbles](/channels/bluebubbles)
+  - iMessage (legacy): [iMessage](/channels/imessage)
+  - Discord: [Discord](/channels/discord)
+  - Slack: [Slack](/channels/slack)

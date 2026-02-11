@@ -1,0 +1,107 @@
+---
+summary: "OpenClaw が環境変数を読み込む場所と、その優先順位"
+read_when:
+  - どのenvバーがロードされているか、そしてどの順序でロードされているかを知る必要があります。
+  - Gateway で API キーが見つからない問題をデバッグしている場合
+  - プロバイダー認証やデプロイ環境をドキュメント化している場合
+title: "環境変数"
+---
+
+# 環境変数
+
+OpenClaw は複数のソースから環境変数を取得します。ルールは **既存の値を決して上書きしない** ことです。 ルールは**既存の値を上書きしない**です。
+
+## 優先順位（高い → 低い）
+
+1. **プロセス環境**（Gateway プロセスが親のシェル／デーモンからすでに受け取っているもの）。
+2. **現在の作業ディレクトリにある `.env`**（dotenv のデフォルト。上書きしません）。
+3. **`~/.openclaw/.env` にあるグローバル `.env`**（別名 `$OPENCLAW_STATE_DIR/.env`。上書きしません）。
+4. **`~/.openclaw/openclaw.json` 内の Config `env` ブロック**（欠落している場合にのみ適用）。
+5. **任意のログインシェルからのインポート**（`env.shellEnv.enabled` または `OPENCLAW_LOAD_SHELL_ENV=1`）。期待されるキーが欠けている場合にのみ適用。
+
+Config ファイルが完全に存在しない場合は、手順 4 はスキップされます。シェルインポートは、有効化されていれば引き続き実行されます。
+
+## Config `env` ブロック
+
+インラインで環境変数を設定する同等の方法が 2 つあります（いずれも上書きしません）：
+
+```json5
+{
+  env: {
+    OPENROUTER_API_KEY: "sk-or-...",
+    vars: {
+      GROQ_API_KEY: "gsk-...",
+    },
+  },
+}
+```
+
+## シェルの環境変数インポート
+
+`env.shellEnv` はログインシェルを実行し、**欠落している** 期待されるキーのみをインポートします：
+
+```json5
+{
+  env: {
+    shellEnv: {
+      enabled: true,
+      timeoutMs: 15000,
+    },
+  },
+}
+```
+
+Env var equalents:
+
+- `OPENCLAW_LOAD_SHELL_ENV=1`
+- `OPENCLAW_SHELL_ENV_TIMEOUT_MS=15000`
+
+## Config 内での環境変数置換
+
+`${VAR_NAME}` 構文を使用して、Config の文字列値内で環境変数を直接参照できます：
+
+```json5
+{
+  models: {
+    providers: {
+      "vercel-gateway": {
+        apiKey: "${VERCEL_GATEWAY_API_KEY}",
+      },
+    },
+  },
+}
+```
+
+詳細は「[Configuration: Env var substitution](/gateway/configuration#env-var-substitution-in-config)」を参照してください。
+
+## パス関連の環境変数
+
+| 変数                     | 目的                                                                                                              |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `OPENCLAW_HOME`        | すべての内部パス解決（`~/.openclaw/`、エージェントディレクトリ、セッション、認証情報）で使用されるホームディレクトリを上書きします。 専用のサービスユーザーとして OpenClaw を実行する場合に便利です。 |
+| `OPENCLAW_STATE_DIR`   | 状態ディレクトリを上書きします（デフォルトは `~/.openclaw`）。                                                                          |
+| `OPENCLAW_CONFIG_PATH` | 設定ファイルのパスを上書きします（デフォルトは `~/.openclaw/openclaw.json`）。                                                           |
+
+### `OPENCLAW_HOME`
+
+設定されている場合、`OPENCLAW_HOME` はすべての内部パス解決において、システムのホームディレクトリ（`$HOME` / `os.homedir()`）を置き換えます。 これにより、ヘッドレスなサービスアカウント向けに完全なファイルシステム分離が可能になります。
+
+**優先順位:** `OPENCLAW_HOME` > `$HOME` > `USERPROFILE` > `os.homedir()`
+
+**例**（macOS LaunchDaemon）:
+
+```xml
+<key>EnvironmentVariables</key>
+<dict>
+  <key>OPENCLAW_HOME</key>
+  <string>/Users/kira</string>
+</dict>
+```
+
+`OPENCLAW_HOME` はチルダパス（例: `~/svc`）にも設定でき、その場合は使用前に `$HOME` を用いて展開されます。
+
+## 関連
+
+- [Gateway 設定](/gateway/configuration)
+- [FAQ: env vars と .env の読み込み](/help/faq#env-vars-and-env-loading)
+- [モデル概要](/concepts/models)

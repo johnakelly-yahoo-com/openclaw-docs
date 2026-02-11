@@ -1,10 +1,9 @@
 site_name: "OpenClaw Documentation"
 site_description: "OpenClaw documentation in 22 languages"
-site_url: "https://www.law-kelly.com/openclaw-docs/"
+site_url: "https://johnakelly-yahoo-com.github.io/openclaw-docs/"
 site_author: "John Kelly"
 
-# Point to the existing docs directory
-docs_dir: "/Users/john_a_kelly/Library/CloudStorage/Dropbox/Clients/N.9031 Newspapers Purchase/08 OpenClaw Docs Localization/repo/docs"
+docs_dir: docs
 
 theme:
   name: material
@@ -97,7 +96,7 @@ plugins:
         - locale: sv
           name: Svenska
           build: true
-        - locale: fil
+        - locale: tl
           name: Filipino
           build: true
         - locale: nl
@@ -166,5 +165,5 @@ extra_css:
 
 copyright: >
   Community translations maintained by
-  <a href="https://www.law-kelly.com">John Kelly</a>.
+  <a href="http://blog.law-kelly.com/2026/02/open-source-means-open-language.html">John Kelly</a>.
   Improve translations on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.

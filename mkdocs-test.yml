@@ -1,9 +1,9 @@
 site_name: "OpenClaw Documentation"
 site_description: "OpenClaw documentation in 22 languages"
-site_url: "https://www.law-kelly.com/openclaw-docs/"
+site_url: "https://johnakelly-yahoo-com.github.io/openclaw-docs/"
 site_author: "John Kelly"
 
-docs_dir: "/Users/john_a_kelly/Library/CloudStorage/Dropbox/Clients/N.9031 Newspapers Purchase/08 OpenClaw Docs Localization/repo/docs"
+docs_dir: docs
 
 theme:
   name: material
@@ -55,6 +55,329 @@ plugins:
           name: Español
           build: true
 
+nav:
+  - Get started:
+    - Home:
+      - index.md
+    - Overview:
+      - start/showcase.md
+    - Core concepts:
+      - concepts/features.md
+    - First steps:
+      - start/getting-started.md
+      - start/wizard.md
+      - start/onboarding.md
+    - Guides:
+      - start/openclaw.md
+  - Install:
+    - Install overview:
+      - install/index.md
+      - install/installer.md
+    - Other install methods:
+      - install/docker.md
+      - install/nix.md
+      - install/ansible.md
+      - install/bun.md
+    - Maintenance:
+      - install/updating.md
+      - install/migrating.md
+      - install/uninstall.md
+    - Hosting and deployment:
+      - install/fly.md
+      - install/hetzner.md
+      - install/gcp.md
+      - install/macos-vm.md
+      - install/exe-dev.md
+      # install/railway.md — missing from upstream
+      # install/render.md — missing from upstream
+      # install/northflank.md — missing from upstream
+    - Advanced:
+      - install/development-channels.md
+  - Channels:
+    - Overview:
+      - channels/index.md
+    - Messaging platforms:
+      - channels/whatsapp.md
+      - channels/telegram.md
+      - channels/grammy.md
+      - channels/discord.md
+      - channels/slack.md
+      - channels/feishu.md
+      - channels/googlechat.md
+      - channels/mattermost.md
+      - channels/signal.md
+      - channels/imessage.md
+      - channels/msteams.md
+      - channels/line.md
+      - channels/matrix.md
+      - channels/zalo.md
+      - channels/zalouser.md
+    - Configuration:
+      - channels/pairing.md
+      - channels/group-messages.md
+      - channels/groups.md
+      - channels/broadcast-groups.md
+      - channels/channel-routing.md
+      - channels/location.md
+      - channels/troubleshooting.md
+  - Agents:
+    - Fundamentals:
+      - concepts/architecture.md
+      - concepts/agent.md
+      - concepts/agent-loop.md
+      - concepts/system-prompt.md
+      - concepts/context.md
+      - concepts/agent-workspace.md
+      - concepts/oauth.md
+    - Bootstrapping:
+      - start/bootstrapping.md
+    - Sessions and memory:
+      - concepts/session.md
+      - concepts/sessions.md
+      - concepts/session-pruning.md
+      - concepts/session-tool.md
+      - concepts/memory.md
+      - concepts/compaction.md
+    - Multi-agent:
+      - concepts/multi-agent.md
+      - concepts/presence.md
+    - Messages and delivery:
+      - concepts/messages.md
+      - concepts/streaming.md
+      - concepts/retry.md
+      - concepts/queue.md
+  - Tools:
+    - Overview:
+      - tools/index.md
+    - Built-in tools:
+      - tools/lobster.md
+      - tools/llm-task.md
+      - tools/exec.md
+      - tools/web.md
+      - tools/apply-patch.md
+      - tools/elevated.md
+      - tools/thinking.md
+      - tools/reactions.md
+    - Browser:
+      - tools/browser.md
+      - tools/browser-login.md
+      - tools/chrome-extension.md
+      - tools/browser-linux-troubleshooting.md
+    - Agent coordination:
+      - tools/agent-send.md
+      - tools/subagents.md
+      - tools/multi-agent-sandbox-tools.md
+    - Skills:
+      - tools/slash-commands.md
+      - tools/skills.md
+      - tools/skills-config.md
+      - tools/clawhub.md
+      - tools/plugin.md
+    - Extensions:
+      - plugins/voice-call.md
+      - plugins/zalouser.md
+    - Automation:
+      - automation/hooks.md
+      - automation/cron-jobs.md
+      - automation/cron-vs-heartbeat.md
+      - automation/troubleshooting.md
+      - automation/webhook.md
+      - automation/gmail-pubsub.md
+      - automation/poll.md
+      - automation/auth-monitoring.md
+    - Hooks:
+      - hooks/soul-evil.md
+    - Media and devices:
+      - nodes/index.md
+      - nodes/troubleshooting.md
+      - nodes/images.md
+      - nodes/audio.md
+      - nodes/camera.md
+      - nodes/talk.md
+      - nodes/voicewake.md
+      - nodes/location-command.md
+  - Models:
+    - Overview:
+      - providers/index.md
+      - providers/models.md
+    - Model concepts:
+      - concepts/models.md
+    - Configuration:
+      - concepts/model-providers.md
+      - concepts/model-failover.md
+    - Providers:
+      - providers/anthropic.md
+      - providers/openai.md
+      - providers/openrouter.md
+      - providers/bedrock.md
+      - providers/vercel-ai-gateway.md
+      - providers/moonshot.md
+      - providers/minimax.md
+      - providers/opencode.md
+      - providers/glm.md
+      - providers/zai.md
+      - providers/synthetic.md
+      - providers/qianfan.md
+  - Platforms:
+    - Platforms overview:
+      - platforms/index.md
+      - platforms/macos.md
+      - platforms/linux.md
+      - platforms/windows.md
+      - platforms/android.md
+      - platforms/ios.md
+    - macOS companion app:
+      - platforms/mac/dev-setup.md
+      - platforms/mac/menu-bar.md
+      - platforms/mac/voicewake.md
+      - platforms/mac/voice-overlay.md
+      - platforms/mac/webchat.md
+      - platforms/mac/canvas.md
+      - platforms/mac/child-process.md
+      - platforms/mac/health.md
+      - platforms/mac/icon.md
+      - platforms/mac/logging.md
+      - platforms/mac/permissions.md
+      - platforms/mac/remote.md
+      - platforms/mac/signing.md
+      - platforms/mac/release.md
+      - platforms/mac/bundled-gateway.md
+      - platforms/mac/xpc.md
+      - platforms/mac/skills.md
+      - platforms/mac/peekaboo.md
+  - Gateway & Ops:
+    - Gateway:
+      - gateway/index.md
+      - Configuration and operations:
+        - gateway/configuration.md
+        - gateway/configuration-examples.md
+        - gateway/authentication.md
+        - gateway/health.md
+        - gateway/heartbeat.md
+        - gateway/doctor.md
+        - gateway/logging.md
+        - gateway/gateway-lock.md
+        - gateway/background-process.md
+        - gateway/multiple-gateways.md
+        - gateway/troubleshooting.md
+      - Security and sandboxing:
+        - gateway/security/index.md
+        - gateway/sandboxing.md
+        - gateway/sandbox-vs-tool-policy-vs-elevated.md
+      - Protocols and APIs:
+        - gateway/protocol.md
+        - gateway/bridge-protocol.md
+        - gateway/openai-http-api.md
+        - gateway/tools-invoke-http-api.md
+        - gateway/cli-backends.md
+        - gateway/local-models.md
+      - Networking and discovery:
+        - gateway/network-model.md
+        - gateway/pairing.md
+        - gateway/discovery.md
+        - gateway/bonjour.md
+    - Remote access:
+      - gateway/remote.md
+      - gateway/remote-gateway-readme.md
+      - gateway/tailscale.md
+    - Security:
+      - security/formal-verification.md
+    - Web interfaces:
+      - web/index.md
+      - web/control-ui.md
+      - web/dashboard.md
+      - web/webchat.md
+      - web/tui.md
+  - Reference:
+    - CLI commands:
+      - cli/index.md
+      - cli/agent.md
+      - cli/agents.md
+      - cli/approvals.md
+      - cli/browser.md
+      - cli/channels.md
+      - cli/configure.md
+      - cli/cron.md
+      - cli/dashboard.md
+      - cli/directory.md
+      - cli/dns.md
+      - cli/docs.md
+      - cli/doctor.md
+      - cli/gateway.md
+      - cli/health.md
+      - cli/hooks.md
+      - cli/logs.md
+      - cli/memory.md
+      - cli/message.md
+      - cli/models.md
+      - cli/nodes.md
+      - cli/onboard.md
+      - cli/pairing.md
+      - cli/plugins.md
+      - cli/reset.md
+      - cli/sandbox.md
+      - cli/security.md
+      - cli/sessions.md
+      - cli/setup.md
+      - cli/skills.md
+      - cli/status.md
+      - cli/system.md
+      - cli/tui.md
+      - cli/uninstall.md
+      - cli/update.md
+      - cli/voicecall.md
+    - RPC and API:
+      - reference/rpc.md
+      - reference/device-models.md
+    - Templates:
+      - reference/AGENTS.default.md
+      - reference/templates/AGENTS.md
+      - reference/templates/BOOT.md
+      - reference/templates/BOOTSTRAP.md
+      - reference/templates/HEARTBEAT.md
+      - reference/templates/IDENTITY.md
+      - reference/templates/SOUL.md
+      - reference/templates/TOOLS.md
+      - reference/templates/USER.md
+    - Technical reference:
+      - reference/wizard.md
+      - reference/token-use.md
+    - Concept internals:
+      - concepts/typebox.md
+      - concepts/markdown-formatting.md
+      - concepts/typing-indicators.md
+      - concepts/usage-tracking.md
+      - concepts/timezone.md
+    - Project:
+      - reference/credits.md
+    - Release notes:
+      - reference/RELEASING.md
+      - reference/test.md
+  - Help:
+    - Help:
+      - help/index.md
+      - help/troubleshooting.md
+      - help/faq.md
+    - Community:
+      - start/lore.md
+    - Environment and debugging:
+      - help/environment.md
+      - help/debugging.md
+      - help/testing.md
+      - help/scripts.md
+    - Node runtime:
+      - install/node.md
+    - Compaction internals:
+      - reference/session-management-compaction.md
+    - Developer setup:
+      - start/setup.md
+    - Contributing:
+      - help/submitting-a-pr.md
+      - help/submitting-an-issue.md
+    - Docs meta:
+      - start/hubs.md
+      - start/docs-directory.md
+
 hooks:
   - hooks/fix_image_paths.py
 
@@ -75,5 +398,5 @@ extra_css:
 
 copyright: >
   Community translations maintained by
-  <a href="https://www.law-kelly.com">John Kelly</a>.
+  <a href="http://blog.law-kelly.com/2026/02/open-source-means-open-language.html">John Kelly</a>.
   Improve translations on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.

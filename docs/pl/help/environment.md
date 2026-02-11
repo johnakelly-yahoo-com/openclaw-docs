@@ -1,0 +1,107 @@
+---
+summary: "„Skąd OpenClaw ładuje zmienne środowiskowe i jaka jest kolejność pierwszeństwa”"
+read_when:
+  - Musisz wiedzieć, które zmienne środowiskowe są ładowane i w jakiej kolejności
+  - Debugujesz brakujące klucze API w Gateway
+  - Dokumentujesz uwierzytelnianie dostawców lub środowiska wdrożeniowe
+title: "„Zmienne środowiskowe”"
+---
+
+# Zmienne środowiskowe
+
+OpenClaw pobiera zmienne środowiskowe z wielu źródeł. Zasada brzmi: **nigdy nie nadpisuj istniejących wartości**.
+
+## Kolejność pierwszeństwa (od najwyższej → do najniższej)
+
+1. **Środowisko procesu** (to, co proces Gateway już otrzymał z nadrzędnej powłoki/daemona).
+2. **`.env` w bieżącym katalogu roboczym** (domyślne dotenv; nie nadpisuje).
+3. **Globalny `.env`** w `~/.openclaw/.env` (aka `$OPENCLAW_STATE_DIR/.env`; nie nadpisuje).
+4. **Blok Config `env`** w `~/.openclaw/openclaw.json` (stosowany tylko, jeśli brakuje wartości).
+5. **Opcjonalny import powłoki logowania** (`env.shellEnv.enabled` lub `OPENCLAW_LOAD_SHELL_ENV=1`), stosowany wyłącznie dla brakujących oczekiwanych kluczy.
+
+Jeśli plik konfiguracji jest całkowicie nieobecny, krok 4 jest pomijany; import powłoki nadal jest wykonywany, jeśli jest włączony.
+
+## Blok Config `env`
+
+Dwa równoważne sposoby ustawiania var env (oba nie są nadpisywane):
+
+```json5
+{
+  env: {
+    OPENROUTER_API_KEY: "sk-or-...",
+    vars: {
+      GROQ_API_KEY: "gsk-...",
+    },
+  },
+}
+```
+
+## Import Shell env
+
+`env.shellEnv` uruchamia Twoją powłokę logowania i importuje tylko **brakujące** oczekiwane klucze:
+
+```json5
+{
+  env: {
+    shellEnv: {
+      enabled: true,
+      timeoutMs: 15000,
+    },
+  },
+}
+```
+
+Ekwiwalenty Env var:
+
+- `OPENCLAW_LOAD_SHELL_ENV=1`
+- `OPENCLAW_SHELL_ENV_TIMEOUT_MS=15000`
+
+## Podstawienie Env var w konfiguracji
+
+Możesz odwoływać się bezpośrednio do zmiennych środowiskowych w wartościach typu string w konfiguracji, używając składni `${VAR_NAME}`:
+
+```json5
+{
+  models: {
+    providers: {
+      "vercel-gateway": {
+        apiKey: "${VERCEL_GATEWAY_API_KEY}",
+      },
+    },
+  },
+}
+```
+
+Zobacz [Konfiguracja: podstawianie zmiennych środowiskowych](/gateway/configuration#env-var-substitution-in-config), aby poznać pełne szczegóły.
+
+## Path-related env vars
+
+| Zmienna                | Przeznaczenie                                                                                                                                                                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OPENCLAW_HOME`        | Override the home directory used for all internal path resolution (`~/.openclaw/`, agent dirs, sessions, credentials). Useful when running OpenClaw as a dedicated service user. |
+| `OPENCLAW_STATE_DIR`   | Override the state directory (default `~/.openclaw`).                                                                                                                                            |
+| `OPENCLAW_CONFIG_PATH` | Override the config file path (default `~/.openclaw/openclaw.json`).                                                                                                                             |
+
+### `OPENCLAW_HOME`
+
+When set, `OPENCLAW_HOME` replaces the system home directory (`$HOME` / `os.homedir()`) for all internal path resolution. This enables full filesystem isolation for headless service accounts.
+
+**Precedence:** `OPENCLAW_HOME` > `$HOME` > `USERPROFILE` > `os.homedir()`
+
+**Example** (macOS LaunchDaemon):
+
+```xml
+<key>EnvironmentVariables</key>
+<dict>
+  <key>OPENCLAW_HOME</key>
+  <string>/Users/kira</string>
+</dict>
+```
+
+`OPENCLAW_HOME` can also be set to a tilde path (e.g. `~/svc`), which gets expanded using `$HOME` before use.
+
+## Powiązane
+
+- [Konfiguracja Gateway](/gateway/configuration)
+- [FAQ: zmienne środowiskowe i ładowanie .env](/help/faq#env-vars-and-env-loading)
+- [Przegląd modeli](/concepts/models)

@@ -1,0 +1,174 @@
+---
+summary: "Opsætning af SSH-tunnel for OpenClaw.app, der forbinder til en fjern gateway"
+read_when: "Tilslutning af macOS-appen til en fjern gateway via SSH"
+title: "Opsætning af fjern Gateway"
+---
+
+# Kørsel af OpenClaw.app med en fjern Gateway
+
+OpenClaw.app bruger SSH-tunneling til at oprette forbindelse til en ekstern gateway. Denne guide viser dig, hvordan du opsætter den.
+
+## Overblik
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#000000',
+    'primaryBorderColor': '#000000',
+    'lineColor': '#000000',
+    'secondaryColor': '#f9f9fb',
+    'tertiaryColor': '#ffffff',
+    'clusterBkg': '#f9f9fb',
+    'clusterBorder': '#000000',
+    'nodeBorder': '#000000',
+    'mainBkg': '#ffffff',
+    'edgeLabelBackground': '#ffffff'
+  }
+}}%%
+flowchart TB
+    subgraph Client["Client Machine"]
+        direction TB
+        A["OpenClaw.app"]
+        B["ws://127.0.0.1:18789\n(local port)"]
+        T["SSH Tunnel"]
+
+        A --> B
+        B --> T
+    end
+    subgraph Remote["Remote Machine"]
+        direction TB
+        C["Gateway WebSocket"]
+        D["ws://127.0.0.1:18789"]
+
+        C --> D
+    end
+    T --> C
+```
+
+## Hurtig opsætning
+
+### Trin 1: Tilføj SSH-konfiguration
+
+Redigér `~/.ssh/config` og tilføj:
+
+```ssh
+Host remote-gateway
+    HostName <REMOTE_IP>          # e.g., 172.27.187.184
+    User <REMOTE_USER>            # e.g., jefferson
+    LocalForward 18789 127.0.0.1:18789
+    IdentityFile ~/.ssh/id_rsa
+```
+
+Erstat `<REMOTE_IP>` og `<REMOTE_USER>` med dine værdier.
+
+### Trin 2: Kopiér SSH-nøgle
+
+Kopiér din offentlige nøgle til den fjerne maskine (indtast adgangskode én gang):
+
+```bash
+ssh-copy-id -i ~/.ssh/id_rsa <REMOTE_USER>@<REMOTE_IP>
+```
+
+### Trin 3: Sæt Gateway-token
+
+```bash
+launchctl setenv OPENCLAW_GATEWAY_TOKEN "<your-token>"
+```
+
+### Trin 4: Start SSH-tunnel
+
+```bash
+ssh -N remote-gateway &
+```
+
+### Trin 5: Genstart OpenClaw.app
+
+```bash
+# Quit OpenClaw.app (⌘Q), then reopen:
+open /path/to/OpenClaw.app
+```
+
+Appen vil nu oprette forbindelse til den fjerne gateway via SSH-tunnelen.
+
+---
+
+## Automatisk start af tunnel ved login
+
+For at få SSH-tunnelen til at starte automatisk, når du logger ind, skal du oprette en Launch Agent.
+
+### Opret PLIST-filen
+
+Gem dette som `~/Library/LaunchAgents/bot.molt.ssh-tunnel.plist`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>bot.molt.ssh-tunnel</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/ssh</string>
+        <string>-N</string>
+        <string>remote-gateway</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+```
+
+### Indlæs Launch Agent
+
+```bash
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/bot.molt.ssh-tunnel.plist
+```
+
+Tunnelen vil nu:
+
+- Starte automatisk, når du logger ind
+- Genstarte, hvis den crasher
+- Køre videre i baggrunden
+
+Legacy-note: fjern eventuelle resterende `com.openclaw.ssh-tunnel` LaunchAgent, hvis de findes.
+
+---
+
+## Fejlfinding
+
+**Tjek om tunnelen kører:**
+
+```bash
+ps aux | grep "ssh -N remote-gateway" | grep -v grep
+lsof -i :18789
+```
+
+**Genstart tunnelen:**
+
+```bash
+launchctl kickstart -k gui/$UID/bot.molt.ssh-tunnel
+```
+
+**Stop tunnelen:**
+
+```bash
+launchctl bootout gui/$UID/bot.molt.ssh-tunnel
+```
+
+---
+
+## Sådan virker det
+
+| Komponent                            | Hvad den gør                                                                |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| `LocalForward 18789 127.0.0.1:18789` | Videresender lokal port 18789 til fjern port 18789                          |
+| `ssh -N`                             | SSH uden at udføre fjernkommandoer (kun port forwarding) |
+| `KeepAlive`                          | Genstarter automatisk tunnelen, hvis den crasher                            |
+| `RunAtLoad`                          | Starter tunnelen, når agenten indlæses                                      |
+
+OpenClaw.app forbinder til `ws://127.0.0.1:18789` på din klientmaskine. SSH-tunnelen videresender denne forbindelse til port 18789 på fjernmaskinen, hvor Gateway kører.
