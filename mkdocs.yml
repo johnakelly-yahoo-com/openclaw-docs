@@ -153,6 +153,76 @@ markdown_extensions:
   - tables
 
 extra:
+  alternate:
+    - name: English
+      link: /openclaw-docs/
+      lang: en
+    - name: 日本語
+      link: /openclaw-docs/ja/
+      lang: ja
+    - name: 한국어
+      link: /openclaw-docs/ko/
+      lang: ko
+    - name: 繁體中文
+      link: /openclaw-docs/zh-TW/
+      lang: zh-TW
+    - name: 简体中文
+      link: /openclaw-docs/zh-CN/
+      lang: zh-CN
+    - name: Español
+      link: /openclaw-docs/es/
+      lang: es
+    - name: Français
+      link: /openclaw-docs/fr/
+      lang: fr
+    - name: Deutsch
+      link: /openclaw-docs/de/
+      lang: de
+    - name: Português (Brasil)
+      link: /openclaw-docs/pt-BR/
+      lang: pt-BR
+    - name: Tiếng Việt
+      link: /openclaw-docs/vi/
+      lang: vi
+    - name: Svenska
+      link: /openclaw-docs/sv/
+      lang: sv
+    - name: Filipino
+      link: /openclaw-docs/tl/
+      lang: tl
+    - name: Nederlands
+      link: /openclaw-docs/nl/
+      lang: nl
+    - name: اردو
+      link: /openclaw-docs/ur/
+      lang: ur
+    - name: العربية
+      link: /openclaw-docs/ar/
+      lang: ar
+    - name: हिन्दी
+      link: /openclaw-docs/hi/
+      lang: hi
+    - name: Dansk
+      link: /openclaw-docs/da/
+      lang: da
+    - name: Polski
+      link: /openclaw-docs/pl/
+      lang: pl
+    - name: ไทย
+      link: /openclaw-docs/th/
+      lang: th
+    - name: Türkçe
+      link: /openclaw-docs/tr/
+      lang: tr
+    - name: မြန်မာ
+      link: /openclaw-docs/my/
+      lang: my
+    - name: Русский
+      link: /openclaw-docs/ru/
+      lang: ru
+    - name: O'zbek
+      link: /openclaw-docs/uz/
+      lang: uz
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/openclaw/openclaw
