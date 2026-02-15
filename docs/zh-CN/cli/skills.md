@@ -1,25 +1,32 @@
 ---
-summary: "32. `openclaw skills` 的 CLI 参考（列表/信息/检查）以及技能可用性"
 read_when:
-  - 33. 你想查看哪些技能可用并已准备好运行
-  - 34. 你想调试技能缺失的二进制文件/环境/配置
-title: "35. skills"
+  - 你想查看哪些 Skills 可用并准备好运行
+  - 你想调试 Skills 缺少的二进制文件/环境变量/配置
+summary: "`openclaw skills` 的 CLI 参考（列出/信息/检查）和 skill 资格"
+title: skills
+x-i18n:
+  generated_at: "2026-02-03T07:45:14Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: 7878442c88a27ec8033f3125c319e9a6a85a1c497a404a06112ad45185c261b0
+  source_path: cli/skills.md
+  workflow: 15
 ---
 
-# 36. `openclaw skills`
+# `openclaw skills`
 
-37. 检查技能（内置 + 工作区 + 托管覆盖），并查看哪些可用、哪些缺少要求。
+检查 Skills（内置 + 工作区 + 托管覆盖）并查看哪些符合条件，哪些缺少要求。
 
-38. 相关：
+相关内容：
 
-- 39. 技能系统：[Skills](/tools/skills)
-- 40. 技能配置：[Skills config](/tools/skills-config)
-- 41. ClawHub 安装：[ClawHub](/tools/clawhub)
+- Skills 系统：[Skills](/tools/skills)
+- Skills 配置：[Skills 配置](/tools/skills-config)
+- ClawHub 安装：[ClawHub](/tools/clawhub)
 
-## 42. 命令
+## 命令
 
 ```bash
-43. openclaw skills list
+openclaw skills list
 openclaw skills list --eligible
 openclaw skills info <name>
 openclaw skills check

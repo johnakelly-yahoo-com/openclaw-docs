@@ -1,31 +1,38 @@
 ---
-summary: "通过 grammY 集成 Telegram Bot API，并附带设置说明"
 read_when:
-  - 正在处理 Telegram 或 grammY 路径
+  - 开发 Telegram 或 grammY 相关功能时
+summary: 通过 grammY 集成 Telegram Bot API，附设置说明
 title: grammY
+x-i18n:
+  generated_at: "2026-02-03T10:03:55Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: ea7ef23e6d77801f4ef5fc56685ef4470f79f5aecab448d644a72cbab53521b7
+  source_path: channels/grammy.md
+  workflow: 15
 ---
 
 # grammY 集成（Telegram Bot API）
 
 # 为什么选择 grammY
 
-- 以 TS 为先的 Bot API 客户端，内置长轮询与 webhook 辅助工具、中间件、错误处理和速率限制。
-- Cleaner media helpers than hand-rolling fetch + FormData; supports all Bot API methods.
-- 可扩展：通过自定义 fetch 支持代理、会话中间件（可选）、类型安全的上下文。
+- 以 TS 为核心的 Bot API 客户端，内置长轮询 + webhook 辅助工具、中间件、错误处理和速率限制器。
+- 媒体处理辅助工具比手动编写 fetch + FormData 更简洁；支持所有 Bot API 方法。
+- 可扩展：通过自定义 fetch 支持代理，可选的会话中间件，类型安全的上下文。
 
-# What we shipped
+# 我们发布的内容
 
-- **Single client path:** fetch-based implementation removed; grammY is now the sole Telegram client (send + gateway) with the grammY throttler enabled by default.
-- **Gateway:** `monitorTelegramProvider` builds a grammY `Bot`, wires mention/allowlist gating, media download via `getFile`/`download`, and delivers replies with `sendMessage/sendPhoto/sendVideo/sendAudio/sendDocument`. Supports long-poll or webhook via `webhookCallback`.
-- **Proxy:** optional `channels.telegram.proxy` uses `undici.ProxyAgent` through grammY’s `client.baseFetch`.
-- **Webhook support:** `webhook-set.ts` wraps `setWebhook/deleteWebhook`; `webhook.ts` hosts the callback with health + graceful shutdown. Gateway enables webhook mode when `channels.telegram.webhookUrl` + `channels.telegram.webhookSecret` are set (otherwise it long-polls).
-- **Sessions:** direct chats collapse into the agent main session (`agent:<agentId>:<mainKey>`); groups use `agent:<agentId>:telegram:group:<chatId>`; replies route back to the same channel.
-- **Config knobs:** `channels.telegram.botToken`, `channels.telegram.dmPolicy`, `channels.telegram.groups` (allowlist + mention defaults), `channels.telegram.allowFrom`, `channels.telegram.groupAllowFrom`, `channels.telegram.groupPolicy`, `channels.telegram.mediaMaxMb`, `channels.telegram.linkPreview`, `channels.telegram.proxy`, `channels.telegram.webhookSecret`, `channels.telegram.webhookUrl`.
-- **Draft streaming:** optional `channels.telegram.streamMode` uses `sendMessageDraft` in private topic chats (Bot API 9.3+). This is separate from channel block streaming.
-- **Tests:** grammy mocks cover DM + group mention gating and outbound send; more media/webhook fixtures still welcome.
+- **单一客户端路径：** 移除了基于 fetch 的实现；grammY 现在是唯一的 Telegram 客户端（发送 + Gateway 网关），默认启用 grammY throttler。
+- **Gateway 网关：** `monitorTelegramProvider` 构建 grammY `Bot`，接入 mention/allowlist 网关控制，通过 `getFile`/`download` 下载媒体，并使用 `sendMessage/sendPhoto/sendVideo/sendAudio/sendDocument` 发送回复。通过 `webhookCallback` 支持长轮询或 webhook。
+- **代理：** 可选的 `channels.telegram.proxy` 通过 grammY 的 `client.baseFetch` 使用 `undici.ProxyAgent`。
+- **Webhook 支持：** `webhook-set.ts` 封装了 `setWebhook/deleteWebhook`；`webhook.ts` 托管回调，支持健康检查和优雅关闭。当设置了 `channels.telegram.webhookUrl` + `channels.telegram.webhookSecret` 时，Gateway 网关启用 webhook 模式（否则使用长轮询）。
+- **会话：** 私聊折叠到智能体主会话（`agent:<agentId>:<mainKey>`）；群组使用 `agent:<agentId>:telegram:group:<chatId>`；回复路由回同一渠道。
+- **配置选项：** `channels.telegram.botToken`、`channels.telegram.dmPolicy`、`channels.telegram.groups`（allowlist + mention 默认值）、`channels.telegram.allowFrom`、`channels.telegram.groupAllowFrom`、`channels.telegram.groupPolicy`、`channels.telegram.mediaMaxMb`、`channels.telegram.linkPreview`、`channels.telegram.proxy`、`channels.telegram.webhookSecret`、`channels.telegram.webhookUrl`。
+- **草稿流式传输：** 可选的 `channels.telegram.streamMode` 在私有话题聊天中使用 `sendMessageDraft`（Bot API 9.3+）。这与渠道分块流式传输是分开的。
+- **测试：** grammY mock 覆盖了私信 + 群组 mention 网关控制和出站发送；欢迎添加更多媒体/webhook 测试用例。
 
-Open questions
+待解决问题
 
-- Optional grammY plugins (throttler) if we hit Bot API 429s.
-- Add more structured media tests (stickers, voice notes).
-- Make webhook listen port configurable (currently fixed to 8787 unless wired through the gateway).
+- 如果遇到 Bot API 429 错误，考虑使用可选的 grammY 插件（throttler）。
+- 添加更多结构化媒体测试（贴纸、语音消息）。
+- 使 webhook 监听端口可配置（目前固定为 8787，除非通过 Gateway 网关配置）。

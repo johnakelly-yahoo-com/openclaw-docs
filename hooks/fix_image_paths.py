@@ -311,134 +311,8 @@ SLUG_MAP = {
 }
 
 
-CLEAN_HOMEPAGE = r'''---
-summary: "OpenClaw is a multi-channel gateway for AI agents that runs on any OS."
-title: "OpenClaw Documentation — veiseule.ai"
----
 
-<p align="center">
-    <img
-        src="/assets/veiseule-logo-light.png"
-        alt="veiseule.ai"
-        width="600"
-        class="dark-hidden"
-    />
-    <img
-        src="/assets/veiseule-logo-dark.png"
-        alt="veiseule.ai"
-        width="600"
-        class="light-hidden"
-    />
-</p>
-
-<p align="center"><strong>Community translations in 22 languages, maintained on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.</strong></p>
-
----
-
-OpenClaw is a **self-hosted gateway** that connects your favorite chat apps -- WhatsApp, Telegram, Discord, iMessage, and more -- to AI coding agents like Pi. You run a single Gateway process on your own machine (or a server), and it becomes the bridge between your messaging apps and an always-available AI assistant.
-
-**Who is it for?** Developers and power users who want a personal AI assistant they can message from anywhere -- without giving up control of their data or relying on a hosted service.
-
-**What makes it different?**
-
-- **Self-hosted**: runs on your hardware, your rules
-- **Multi-channel**: one Gateway serves WhatsApp, Telegram, Discord, and more simultaneously
-- **Agent-native**: built for coding agents with tool use, sessions, memory, and multi-agent routing
-- **Open source**: MIT licensed, community-driven
-
-**What do you need?** Node 22+, an API key (Anthropic recommended), and 5 minutes.
-
-## How it works
-
-```mermaid
-flowchart LR
-  A["Chat apps + plugins"] --> B["Gateway"]
-  B --> C["Pi agent"]
-  B --> D["CLI"]
-  B --> E["Web Control UI"]
-  B --> F["macOS app"]
-  B --> G["iOS and Android nodes"]
-```
-
-The Gateway is the single source of truth for sessions, routing, and channel connections.
-
-<p align="center">
-    <img src="/assets/veiseule-pipeline.png" alt="How veiseule.ai Works" width="800" />
-</p>
-
-## Quick start
-
-```bash
-# Install OpenClaw
-npm install -g openclaw@latest
-
-# Onboard and install the service
-openclaw onboard --install-daemon
-
-# Pair WhatsApp and start the Gateway
-openclaw channels login
-openclaw gateway --port 18789
-```
-
-Need the full install and dev setup? See [Getting Started](start/getting-started.md).
-
-## Key capabilities
-
-| Capability | Description |
-|---|---|
-| **Multi-channel gateway** | WhatsApp, Telegram, Discord, and iMessage with a single Gateway process |
-| **Plugin channels** | Add Mattermost and more with extension packages |
-| **Multi-agent routing** | Isolated sessions per agent, workspace, or sender |
-| **Media support** | Send and receive images, audio, and documents |
-| **Web Control UI** | Browser dashboard for chat, config, sessions, and nodes |
-| **Mobile nodes** | Pair iOS and Android nodes with Canvas support |
-
-## Dashboard
-
-Open the browser Control UI after the Gateway starts.
-
-- Local default: [http://127.0.0.1:18789/](http://127.0.0.1:18789/)
-- Remote access: [Web surfaces](web/index.md) and [Tailscale](gateway/tailscale.md)
-
-## Configuration
-
-Config lives at `~/.openclaw/openclaw.json`.
-
-- If you **do nothing**, OpenClaw uses the bundled Pi binary in RPC mode with per-sender sessions.
-- If you want to lock it down, start with `channels.whatsapp.allowFrom` and (for groups) mention rules.
-
-```json5
-{
-  channels: {
-    whatsapp: {
-      allowFrom: ["+15555550123"],
-      groups: { "*": { requireMention: true } },
-    },
-  },
-  messages: { groupChat: { mentionPatterns: ["@openclaw"] } },
-}
-```
-
-## Documentation in your language
-
-<p align="center">
-    <img src="/assets/veiseule-languages.png" alt="Documentation in 22 Languages" width="800" />
-</p>
-
-## Browse the documentation
-
-| Section | Description |
-|---|---|
-| [**Getting Started**](start/getting-started.md) | Install OpenClaw and bring up the Gateway in minutes |
-| [**Configuration**](gateway/configuration.md) | Core Gateway settings, tokens, and provider config |
-| [**Channels**](channels/index.md) | Channel-specific setup for WhatsApp, Telegram, Discord, and more |
-| [**Agents**](concepts/architecture.md) | Architecture, sessions, memory, and multi-agent routing |
-| [**Tools**](tools/index.md) | Built-in tools, browser, skills, and automation |
-| [**Models**](providers/index.md) | Model providers and configuration |
-| [**Platforms**](platforms/index.md) | macOS, Linux, Windows, iOS, and Android |
-| [**CLI Reference**](cli/index.md) | Complete command-line reference |
-| [**Help**](help/index.md) | Troubleshooting, FAQ, and community resources |
-'''
+# No custom homepage -- use the original OpenClaw index.md as-is
 
 
 def _calc_prefix(page_path):
@@ -521,10 +395,6 @@ def on_page_markdown(markdown, page, config, files, **kwargs):
     """Rewrite absolute paths to relative paths, and replace homepage."""
 
     page_path = page.file.src_path
-
-    # Replace homepage with clean professional version
-    if _is_homepage(page_path):
-        markdown = CLEAN_HOMEPAGE
 
     # Calculate the correct relative prefix for this page
     prefix = _calc_prefix(page_path)

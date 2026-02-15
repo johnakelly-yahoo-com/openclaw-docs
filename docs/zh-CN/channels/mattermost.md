@@ -1,46 +1,52 @@
 ---
-summary: "Mattermost bot setup and OpenClaw config"
 read_when:
-  - Setting up Mattermost
-  - Debugging Mattermost routing
-title: "30. Mattermost"
+  - 设置 Mattermost
+  - 调试 Mattermost 路由
+summary: Mattermost 机器人设置和 OpenClaw 配置
+title: Mattermost
+x-i18n:
+  generated_at: "2026-02-03T07:43:43Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: 57fabe5eb0efbcb885f4178b317b2fa99a41daf609e3a471de2b44db9def4ad7
+  source_path: channels/mattermost.md
+  workflow: 15
 ---
 
-# Mattermost (plugin)
+# Mattermost（插件）
 
-Status: supported via plugin (bot token + WebSocket events). Channels, groups, and DMs are supported.
-Mattermost is a self-hostable team messaging platform; see the official site at
-[mattermost.com](https://mattermost.com) for product details and downloads.
+状态：通过插件支持（bot token + WebSocket 事件）。支持频道、群组和私信。
+Mattermost 是一个可自托管的团队消息平台；有关产品详情和下载，请访问官方网站
+[mattermost.com](https://mattermost.com)。
 
-## Plugin required
+## 需要插件
 
-Mattermost ships as a plugin and is not bundled with the core install.
+Mattermost 以插件形式提供，不包含在核心安装中。
 
-Install via CLI (npm registry):
+通过 CLI 安装（npm 注册表）：
 
 ```bash
 openclaw plugins install @openclaw/mattermost
 ```
 
-Local checkout (when running from a git repo):
+本地检出（从 git 仓库运行时）：
 
 ```bash
 openclaw plugins install ./extensions/mattermost
 ```
 
-If you choose Mattermost during configure/onboarding and a git checkout is detected,
-OpenClaw will offer the local install path automatically.
+如果你在配置/新手引导期间选择 Mattermost 并检测到 git 检出，OpenClaw 会自动提供本地安装路径。
 
-Details: [Plugins](/tools/plugin)
+详情：[插件](/tools/plugin)
 
-## 31. 快速设置
+## 快速设置
 
-1. Install the Mattermost plugin.
-2. Create a Mattermost bot account and copy the **bot token**.
-3. Copy the Mattermost **base URL** (e.g., `https://chat.example.com`).
-4. Configure OpenClaw and start the gateway.
+1. 安装 Mattermost 插件。
+2. 创建 Mattermost bot 账户并复制 **bot token**。
+3. 复制 Mattermost **基础 URL**（例如 `https://chat.example.com`）。
+4. 配置 OpenClaw 并启动 Gateway 网关。
 
-Minimal config:
+最小配置：
 
 ```json5
 {
@@ -55,24 +61,24 @@ Minimal config:
 }
 ```
 
-## Environment variables (default account)
+## 环境变量（默认账户）
 
-Set these on the gateway host if you prefer env vars:
+如果你偏好使用环境变量，请在 Gateway 网关主机上设置：
 
 - `MATTERMOST_BOT_TOKEN=...`
 - `MATTERMOST_URL=https://chat.example.com`
 
-Env vars apply only to the **default** account (`default`). Other accounts must use config values.
+环境变量仅适用于**默认**账户（`default`）。其他账户必须使用配置值。
 
-## Chat modes
+## 聊天模式
 
-33. Mattermost 会自动回复私信（DM）。 Channel behavior is controlled by `chatmode`:
+Mattermost 自动响应私信。频道行为由 `chatmode` 控制：
 
-- `oncall` (default): respond only when @mentioned in channels.
-- `onmessage`: respond to every channel message.
-- 34. `onchar`：当消息以触发前缀开头时响应。
+- `oncall`（默认）：仅在频道中被 @提及时响应。
+- `onmessage`：响应每条频道消息。
+- `onchar`：当消息以触发前缀开头时响应。
 
-Config example:
+配置示例：
 
 ```json5
 {
@@ -85,38 +91,38 @@ Config example:
 }
 ```
 
-Notes:
+注意事项：
 
-- `onchar` still responds to explicit @mentions.
-- `channels.mattermost.requireMention` is honored for legacy configs but `chatmode` is preferred.
+- `onchar` 仍会响应显式 @提及。
+- `channels.mattermost.requireMention` 对旧配置仍然有效，但推荐使用 `chatmode`。
 
-## Access control (DMs)
+## 访问控制（私信）
 
-- Default: `channels.mattermost.dmPolicy = "pairing"` (unknown senders get a pairing code).
-- Approve via:
-  - 36. `openclaw pairing list mattermost`
+- 默认：`channels.mattermost.dmPolicy = "pairing"`（未知发送者会收到配对码）。
+- 通过以下方式批准：
+  - `openclaw pairing list mattermost`
   - `openclaw pairing approve mattermost <CODE>`
-- Public DMs: `channels.mattermost.dmPolicy="open"` plus `channels.mattermost.allowFrom=["*"]`.
+- 公开私信：`channels.mattermost.dmPolicy="open"` 加上 `channels.mattermost.allowFrom=["*"]`。
 
-## Channels (groups)
+## 频道（群组）
 
-- 37. 默认值：`channels.mattermost.groupPolicy = "allowlist"`（提及门控）。
-- Allowlist senders with `channels.mattermost.groupAllowFrom` (user IDs or `@username`).
-- Open channels: `channels.mattermost.groupPolicy="open"` (mention-gated).
+- 默认：`channels.mattermost.groupPolicy = "allowlist"`（提及限制）。
+- 使用 `channels.mattermost.groupAllowFrom` 将发送者加入允许列表（用户 ID 或 `@username`）。
+- 开放频道：`channels.mattermost.groupPolicy="open"`（提及限制）。
 
-## Targets for outbound delivery
+## 出站投递目标
 
-Use these target formats with `openclaw message send` or cron/webhooks:
+在 `openclaw message send` 或 cron/webhooks 中使用这些目标格式：
 
-- `channel:<id>` for a channel
-- `user:<id>` for a DM
-- 38. 用于私信的 `@username`（通过 Mattermost API 解析）
+- `channel:<id>` 用于频道
+- `user:<id>` 用于私信
+- `@username` 用于私信（通过 Mattermost API 解析）
 
-Bare IDs are treated as channels.
+裸 ID 被视为频道。
 
-## Multi-account
+## 多账户
 
-Mattermost supports multiple accounts under `channels.mattermost.accounts`:
+Mattermost 支持在 `channels.mattermost.accounts` 下配置多个账户：
 
 ```json5
 {
@@ -131,8 +137,8 @@ Mattermost supports multiple accounts under `channels.mattermost.accounts`:
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-- No replies in channels: ensure the bot is in the channel and mention it (oncall), use a trigger prefix (onchar), or set `chatmode: "onmessage"`.
-- Auth errors: check the bot token, base URL, and whether the account is enabled.
-- Multi-account issues: env vars only apply to the `default` account.
+- 频道中无回复：确保 bot 在频道中并提及它（oncall），使用触发前缀（onchar），或设置 `chatmode: "onmessage"`。
+- 认证错误：检查 bot token、基础 URL 以及账户是否已启用。
+- 多账户问题：环境变量仅适用于 `default` 账户。

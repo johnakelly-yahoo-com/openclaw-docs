@@ -1,6 +1,6 @@
 site_name: "veiseule.ai"
 site_description: "OpenClaw documentation in 22 languages — AI-powered community translations"
-site_url: "https://veiseule.ai/"
+site_url: "https://veiseule.ai/openclaw-docs/"
 site_author: "John Kelly"
 
 docs_dir: docs
@@ -155,77 +155,77 @@ markdown_extensions:
 extra:
   alternate:
     - name: English
-      link: /
+      link: /openclaw-docs/
       lang: en
     - name: 日本語
-      link: /ja/
+      link: /openclaw-docs/ja/
       lang: ja
     - name: 한국어
-      link: /ko/
+      link: /openclaw-docs/ko/
       lang: ko
     - name: 繁體中文
-      link: /zh-TW/
+      link: /openclaw-docs/zh-TW/
       lang: zh-TW
     - name: 简体中文
-      link: /zh-CN/
+      link: /openclaw-docs/zh-CN/
       lang: zh-CN
     - name: Español
-      link: /es/
+      link: /openclaw-docs/es/
       lang: es
     - name: Français
-      link: /fr/
+      link: /openclaw-docs/fr/
       lang: fr
     - name: Deutsch
-      link: /de/
+      link: /openclaw-docs/de/
       lang: de
     - name: Português (Brasil)
-      link: /pt-BR/
+      link: /openclaw-docs/pt-BR/
       lang: pt-BR
     - name: Tiếng Việt
-      link: /vi/
+      link: /openclaw-docs/vi/
       lang: vi
     - name: Svenska
-      link: /sv/
+      link: /openclaw-docs/sv/
       lang: sv
     - name: Filipino
-      link: /tl/
+      link: /openclaw-docs/tl/
       lang: tl
     - name: Nederlands
-      link: /nl/
+      link: /openclaw-docs/nl/
       lang: nl
     - name: اردو
-      link: /ur/
+      link: /openclaw-docs/ur/
       lang: ur
     - name: العربية
-      link: /ar/
+      link: /openclaw-docs/ar/
       lang: ar
     - name: हिन्दी
-      link: /hi/
+      link: /openclaw-docs/hi/
       lang: hi
     - name: Dansk
-      link: /da/
+      link: /openclaw-docs/da/
       lang: da
     - name: Polski
-      link: /pl/
+      link: /openclaw-docs/pl/
       lang: pl
     - name: ไทย
-      link: /th/
+      link: /openclaw-docs/th/
       lang: th
     - name: Türkçe
-      link: /tr/
+      link: /openclaw-docs/tr/
       lang: tr
     - name: မြန်မာ
-      link: /my/
+      link: /openclaw-docs/my/
       lang: my
     - name: Русский
-      link: /ru/
+      link: /openclaw-docs/ru/
       lang: ru
     - name: O'zbek
-      link: /uz/
+      link: /openclaw-docs/uz/
       lang: uz
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/veiseule
+      link: https://github.com/johnakelly-yahoo-com/openclaw-docs
     - icon: material/translate
       link: https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17
   generator: false

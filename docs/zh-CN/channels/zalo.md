@@ -1,69 +1,42 @@
 ---
-summary: "Zalo bot support status, capabilities, and configuration"
 read_when:
-  - Working on Zalo features or webhooks
-title: "Zalo"
+  - 开发 Zalo 功能或 webhooks
+summary: Zalo bot 支持状态、功能和配置
+title: Zalo
+x-i18n:
+  generated_at: "2026-02-03T07:44:44Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: 0311d932349f96412b712970b5d37329b91929bf3020536edf3ca0ff464373c0
+  source_path: channels/zalo.md
+  workflow: 15
 ---
 
 # Zalo (Bot API)
 
-Status: experimental. Direct messages only; groups coming soon per Zalo docs.
+状态：实验性。仅支持私信；根据 Zalo 文档，群组即将推出。
 
-## Plugin required
+## 需要插件
 
-Zalo ships as a plugin and is not bundled with the core install.
+Zalo 以插件形式提供，不包含在核心安装中。
 
-- Install via CLI: `openclaw plugins install @openclaw/zalo`
-- Or select **Zalo** during onboarding and confirm the install prompt
-- Details: [Plugins](/tools/plugin)
+- 通过 CLI 安装：`openclaw plugins install @openclaw/zalo`
+- 或在新手引导期间选择 **Zalo** 并确认安装提示
+- 详情：[插件](/tools/plugin)
 
-## Quick setup (beginner)
+## 快速设置（初学者）
 
-1. Install the Zalo plugin:
-   - From a source checkout: `openclaw plugins install ./extensions/zalo`
-   - From npm (if published): `openclaw plugins install @openclaw/zalo`
-   - Or pick **Zalo** in onboarding and confirm the install prompt
-2. Set the token:
-   - Env: `ZALO_BOT_TOKEN=...`
-   - 34. 或配置：`channels.zalo.botToken: "..."`。
-3. Restart the gateway (or finish onboarding).
-4. DM access is pairing by default; approve the pairing code on first contact.
+1. 安装 Zalo 插件：
+   - 从源代码检出：`openclaw plugins install ./extensions/zalo`
+   - 从 npm（如果已发布）：`openclaw plugins install @openclaw/zalo`
+   - 或在新手引导中选择 **Zalo** 并确认安装提示
+2. 设置 token：
+   - 环境变量：`ZALO_BOT_TOKEN=...`
+   - 或配置：`channels.zalo.botToken: "..."`。
+3. 重启 Gateway 网关（或完成新手引导）。
+4. 私信访问默认为配对模式；首次联系时批准配对码。
 
-Minimal config:
-
-```json5
-{
-  channels: {
-    zalo: {
-      enabled: true,
-      botToken: "12345689:abc-xyz",
-      dmPolicy: "pairing",
-    },
-  },
-}
-```
-
-## What it is
-
-Zalo is a Vietnam-focused messaging app; its Bot API lets the Gateway run a bot for 1:1 conversations.
-It is a good fit for support or notifications where you want deterministic routing back to Zalo.
-
-- A Zalo Bot API channel owned by the Gateway.
-- Deterministic routing: replies go back to Zalo; the model never chooses channels.
-- DMs share the agent's main session.
-- Groups are not yet supported (Zalo docs state "coming soon").
-
-## Setup (fast path)
-
-### 1. Create a bot token (Zalo Bot Platform)
-
-1. Go to [https://bot.zaloplatforms.com](https://bot.zaloplatforms.com) and sign in.
-2. Create a new bot and configure its settings.
-3. Copy the bot token (format: `12345689:abc-xyz`).
-
-### 2) Configure the token (env or config)
-
-Example:
+最小配置：
 
 ```json5
 {
@@ -77,113 +50,147 @@ Example:
 }
 ```
 
-Env option: `ZALO_BOT_TOKEN=...` (works for the default account only).
+## 它是什么
 
-Multi-account support: use `channels.zalo.accounts` with per-account tokens and optional `name`.
+Zalo 是一款专注于越南市场的即时通讯应用；其 Bot API 让 Gateway 网关可以运行一个用于一对一对话的 bot。
+它非常适合需要确定性路由回 Zalo 的支持或通知场景。
 
-3. Restart the gateway. 35. 当令牌被解析（环境变量或配置）后，Zalo 即启动。
-4. DM access defaults to pairing. Approve the code when the bot is first contacted.
+- 由 Gateway 网关拥有的 Zalo Bot API 渠道。
+- 确定性路由：回复返回到 Zalo；模型不会选择渠道。
+- 私信共享智能体的主会话。
+- 群组尚不支持（Zalo 文档标注"即将推出"）。
 
-## How it works (behavior)
+## 设置（快速路径）
 
-- Inbound messages are normalized into the shared channel envelope with media placeholders.
-- Replies always route back to the same Zalo chat.
-- Long-polling by default; webhook mode available with `channels.zalo.webhookUrl`.
+### 1）创建 bot token（Zalo Bot 平台）
 
-## Limits
+1. 前往 **https://bot.zaloplatforms.com** 并登录。
+2. 创建新 bot 并配置其设置。
+3. 复制 bot token（格式：`12345689:abc-xyz`）。
 
-- Outbound text is chunked to 2000 characters (Zalo API limit).
-- Media downloads/uploads are capped by `channels.zalo.mediaMaxMb` (default 5).
-- Streaming is blocked by default due to the 2000 char limit making streaming less useful.
+### 2）配置 token（环境变量或配置）
 
-## Access control (DMs)
+示例：
 
-### DM access
+```json5
+{
+  channels: {
+    zalo: {
+      enabled: true,
+      botToken: "12345689:abc-xyz",
+      dmPolicy: "pairing",
+    },
+  },
+}
+```
 
-- Default: `channels.zalo.dmPolicy = "pairing"`. 36. 未知发送者会收到一个配对码；在批准之前消息将被忽略（配对码 1 小时后过期）。
-- Approve via:
+环境变量选项：`ZALO_BOT_TOKEN=...`（仅适用于默认账户）。
+
+多账户支持：使用 `channels.zalo.accounts` 配置每账户 token 和可选的 `name`。
+
+3. 重启 Gateway 网关。当 token 被解析（环境变量或配置）时，Zalo 启动。
+4. 私信访问默认为配对模式。当 bot 首次被联系时批准配对码。
+
+## 工作原理（行为）
+
+- 入站消息被规范化为带有媒体占位符的共享渠道信封。
+- 回复始终路由回同一 Zalo 聊天。
+- 默认使用长轮询；可通过 `channels.zalo.webhookUrl` 启用 webhook 模式。
+
+## 限制
+
+- 出站文本按 2000 字符分块（Zalo API 限制）。
+- 媒体下载/上传受 `channels.zalo.mediaMaxMb` 限制（默认 5）。
+- 由于 2000 字符限制使流式传输效果不佳，默认阻止流式传输。
+
+## 访问控制（私信）
+
+### 私信访问
+
+- 默认：`channels.zalo.dmPolicy = "pairing"`。未知发送者会收到配对码；消息在批准前会被忽略（配对码 1 小时后过期）。
+- 通过以下方式批准：
   - `openclaw pairing list zalo`
-  - 37. `openclaw pairing approve zalo <CODE>`
-- Pairing is the default token exchange. Details: [Pairing](/channels/pairing)
-- `channels.zalo.allowFrom` accepts numeric user IDs (no username lookup available).
+  - `openclaw pairing approve zalo <CODE>`
+- 配对是默认的令牌交换方式。详情：[配对](/channels/pairing)
+- `channels.zalo.allowFrom` 接受数字用户 ID（无用户名查找功能）。
 
-## Long-polling vs webhook
+## 长轮询与 webhook
 
-- 1. 默认：长轮询（不需要公网 URL）。
-- 2. Webhook 模式：设置 `channels.zalo.webhookUrl` 和 `channels.zalo.webhookSecret`。
-  - 3. Webhook 密钥必须为 8-256 个字符。
-  - 4. Webhook URL 必须使用 HTTPS。
-  - 5. Zalo 会通过 `X-Bot-Api-Secret-Token` 请求头发送事件用于验证。
-  - 6. Gateway HTTP 在 `channels.zalo.webhookPath` 处理 webhook 请求（默认为 webhook URL 的路径）。
+- 默认：长轮询（不需要公共 URL）。
+- Webhook 模式：设置 `channels.zalo.webhookUrl` 和 `channels.zalo.webhookSecret`。
+  - Webhook secret 必须为 8-256 个字符。
+  - Webhook URL 必须使用 HTTPS。
+  - Zalo 发送事件时带有 `X-Bot-Api-Secret-Token` 头用于验证。
+  - Gateway 网关 HTTP 在 `channels.zalo.webhookPath` 处理 webhook 请求（默认为 webhook URL 路径）。
 
-7. **注意：** 根据 Zalo API 文档，getUpdates（轮询）与 webhook 互斥。
+**注意：** 根据 Zalo API 文档，getUpdates（轮询）和 webhook 是互斥的。
 
-## 8. 支持的消息类型
+## 支持的消息类型
 
-- 9. **文本消息**：完全支持，支持 2000 字符分片。
-- 10. **图片消息**：下载并处理入站图片；通过 `sendPhoto` 发送图片。
-- 11. **贴纸**：记录日志但未完全处理（无代理响应）。
-- 12. **不支持的类型**：仅记录日志（例如来自受保护用户的消息）。
+- **文本消息**：完全支持，2000 字符分块。
+- **图片消息**：下载和处理入站图片；通过 `sendPhoto` 发送图片。
+- **贴纸**：已记录但未完全处理（无智能体响应）。
+- **不支持的类型**：已记录（例如来自受保护用户的消息）。
 
-## 13. 能力
+## 功能
 
-| 14. 功能     | 15. 状态                 |
-| --------------------------------- | --------------------------------------------- |
-| 16. 私聊消息   | 17. ✅ 支持               |
-| 18. 群组     | 19. ❌ 即将支持（根据 Zalo 文档） |
-| 20. 媒体（图片） | 21. ✅ 支持               |
-| 22. 表情反应   | 23. ❌ 不支持              |
-| 24. 线程     | 25. ❌ 不支持              |
-| 26. 投票     | 27. ❌ 不支持              |
-| 28. 原生命令   | 29. ❌ 不支持              |
-| 30. 流式     | 31. ⚠️ 被阻止（2000 字符限制）  |
+| 功能         | 状态                          |
+| ------------ | ----------------------------- |
+| 私信         | ✅ 支持                       |
+| 群组         | ❌ 即将推出（根据 Zalo 文档） |
+| 媒体（图片） | ✅ 支持                       |
+| 表情回应     | ❌ 不支持                     |
+| 主题         | ❌ 不支持                     |
+| 投票         | ❌ 不支持                     |
+| 原生命令     | ❌ 不支持                     |
+| 流式传输     | ⚠️ 已阻止（2000 字符限制）    |
 
-## 32. 投递目标（CLI/cron）
+## 投递目标（CLI/cron）
 
-- 33. 使用聊天 ID 作为目标。
-- 34. 示例：`openclaw message send --channel zalo --target 123456789 --message "hi"`。
+- 使用聊天 id 作为目标。
+- 示例：`openclaw message send --channel zalo --target 123456789 --message "hi"`。
 
-## 35. 故障排查
+## 故障排除
 
-36. **机器人没有响应：**
+**Bot 不响应：**
 
-- 37. 检查令牌是否有效：`openclaw channels status --probe`
-- 38. 验证发送方已获批准（配对或 allowFrom）
-- 39. 检查网关日志：`openclaw logs --follow`
+- 检查 token 是否有效：`openclaw channels status --probe`
+- 验证发送者已被批准（配对或 allowFrom）
+- 检查 Gateway 网关日志：`openclaw logs --follow`
 
-40. **Webhook 未接收事件：**
+**Webhook 未收到事件：**
 
-- 41. 确保 webhook URL 使用 HTTPS
-- 42. 验证密钥令牌为 8-256 个字符
-- 43. 确认网关 HTTP 端点在配置的路径上可访问
-- 44. 检查 getUpdates 轮询未在运行（两者互斥）
+- 确保 webhook URL 使用 HTTPS
+- 验证 secret token 为 8-256 个字符
+- 确认 Gateway 网关 HTTP 端点在配置的路径上可访问
+- 检查 getUpdates 轮询未在运行（它们是互斥的）
 
-## 45. 配置参考（Zalo）
+## 配置参考（Zalo）
 
-46. 完整配置：[Configuration](/gateway/configuration)
+完整配置：[配置](/gateway/configuration)
 
-47. 提供商选项：
+提供商选项：
 
-- 48. `channels.zalo.enabled`：启用/禁用通道启动。
-- 49. `channels.zalo.botToken`：来自 Zalo Bot Platform 的机器人令牌。
-- 50. `channels.zalo.tokenFile`：从文件路径读取令牌。
+- `channels.zalo.enabled`：启用/禁用渠道启动。
+- `channels.zalo.botToken`：来自 Zalo Bot 平台的 bot token。
+- `channels.zalo.tokenFile`：从文件路径读取 token。
 - `channels.zalo.dmPolicy`：`pairing | allowlist | open | disabled`（默认：pairing）。
-- `channels.zalo.allowFrom`：私信允许列表（用户 ID）。 `open` 需要 `"*"`。 向导将要求输入数字 ID。
-- `channels.zalo.mediaMaxMb`：入站/出站媒体大小上限（MB，默认 5）。
+- `channels.zalo.allowFrom`：私信允许列表（用户 ID）。`open` 需要 `"*"`。向导会询问数字 ID。
+- `channels.zalo.mediaMaxMb`：入站/出站媒体上限（MB，默认 5）。
 - `channels.zalo.webhookUrl`：启用 webhook 模式（需要 HTTPS）。
-- `channels.zalo.webhookSecret`：webhook 密钥（8–256 个字符）。
-- `channels.zalo.webhookPath`：网关 HTTP 服务器上的 webhook 路径。
+- `channels.zalo.webhookSecret`：webhook secret（8-256 字符）。
+- `channels.zalo.webhookPath`：Gateway 网关 HTTP 服务器上的 webhook 路径。
 - `channels.zalo.proxy`：API 请求的代理 URL。
 
-多账号选项：
+多账户选项：
 
-- `channels.zalo.accounts.<id>`.botToken\`：每个账号的令牌。
-- `channels.zalo.accounts.<id>`.tokenFile\`：每个账号的令牌文件。
-- `channels.zalo.accounts.<id>`.name\`：显示名称。
-- `channels.zalo.accounts.<id>`.enabled\`：启用/禁用账号。
-- `channels.zalo.accounts.<id>`.dmPolicy\`：每个账号的私信策略。
-- `channels.zalo.accounts.<id>`.allowFrom\`：每个账号的允许列表。
-- `channels.zalo.accounts.<id>`.webhookUrl\`：每个账号的 webhook URL。
-- `channels.zalo.accounts.<id>`.webhookSecret\`：每个账号的 webhook 密钥。
-- `channels.zalo.accounts.<id>`.webhookPath\`：每个账号的 webhook 路径。
-- `channels.zalo.accounts.<id>`.proxy\`：每个账号的代理 URL。
+- `channels.zalo.accounts.<id>.botToken`：每账户 token。
+- `channels.zalo.accounts.<id>.tokenFile`：每账户 token 文件。
+- `channels.zalo.accounts.<id>.name`：显示名称。
+- `channels.zalo.accounts.<id>.enabled`：启用/禁用账户。
+- `channels.zalo.accounts.<id>.dmPolicy`：每账户私信策略。
+- `channels.zalo.accounts.<id>.allowFrom`：每账户允许列表。
+- `channels.zalo.accounts.<id>.webhookUrl`：每账户 webhook URL。
+- `channels.zalo.accounts.<id>.webhookSecret`：每账户 webhook secret。
+- `channels.zalo.accounts.<id>.webhookPath`：每账户 webhook 路径。
+- `channels.zalo.accounts.<id>.proxy`：每账户代理 URL。

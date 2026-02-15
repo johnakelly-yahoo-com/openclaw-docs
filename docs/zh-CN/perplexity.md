@@ -1,32 +1,39 @@
 ---
-summary: "18. 用于 web_search 的 Perplexity Sonar 设置"
 read_when:
-  - 19. 你想使用 Perplexity Sonar 进行网页搜索
-  - 20. 你需要 PERPLEXITY_API_KEY 或 OpenRouter 设置
-title: "21. Perplexity Sonar"
+  - 你想使用 Perplexity Sonar 进行网络搜索
+  - 你需要设置 PERPLEXITY_API_KEY 或 OpenRouter
+summary: Perplexity Sonar 的 web_search 设置
+title: Perplexity Sonar
+x-i18n:
+  generated_at: "2026-02-01T21:19:10Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: 264d08e62e3bec854e378dad345ca209d139cd19b0469f3b25f88bb63b73ba00
+  source_path: perplexity.md
+  workflow: 15
 ---
 
-# 22. Perplexity Sonar
+# Perplexity Sonar
 
-23. OpenClaw 可以将 Perplexity Sonar 用于 `web_search` 工具。 24. 你可以通过 Perplexity 的直连 API 或通过 OpenRouter 进行连接。
+OpenClaw 可以使用 Perplexity Sonar 作为 `web_search` 工具。你可以通过 Perplexity 的直连 API 或通过 OpenRouter 连接。
 
-## 25. API 选项
+## API 选项
 
-### 26. Perplexity（直连）
+### Perplexity（直连）
 
-- 27. Base URL: [https://api.perplexity.ai](https://api.perplexity.ai)
-- 28. 环境变量：`PERPLEXITY_API_KEY`
+- Base URL：https://api.perplexity.ai
+- 环境变量：`PERPLEXITY_API_KEY`
 
-### 29. OpenRouter（替代方案）
+### OpenRouter（替代方案）
 
-- 30. Base URL: [https://openrouter.ai/api/v1](https://openrouter.ai/api/v1)
-- 31. 环境变量：`OPENROUTER_API_KEY`
-- 32. 支持预付费/加密货币积分。
+- Base URL：https://openrouter.ai/api/v1
+- 环境变量：`OPENROUTER_API_KEY`
+- 支持预付费/加密货币积分。
 
-## 33. 配置示例
+## 配置示例
 
 ```json5
-34. {
+{
   tools: {
     web: {
       search: {
@@ -42,10 +49,10 @@ title: "21. Perplexity Sonar"
 }
 ```
 
-## 35. 从 Brave 切换
+## 从 Brave 切换
 
 ```json5
-36. {
+{
   tools: {
     web: {
       search: {
@@ -60,19 +67,18 @@ title: "21. Perplexity Sonar"
 }
 ```
 
-37. 如果同时设置了 `PERPLEXITY_API_KEY` 和 `OPENROUTER_API_KEY`，请设置
-    `tools.web.search.perplexity.baseUrl`（或 `tools.web.search.perplexity.apiKey`）以消除歧义。
+如果同时设置了 `PERPLEXITY_API_KEY` 和 `OPENROUTER_API_KEY`，请设置 `tools.web.search.perplexity.baseUrl`（或 `tools.web.search.perplexity.apiKey`）以消除歧义。
 
-38. 如果未设置 base URL，OpenClaw 会根据 API key 来源选择默认值：
+如果未设置 base URL，OpenClaw 会根据 API 密钥来源选择默认值：
 
-- 39. `PERPLEXITY_API_KEY` 或 `pplx-...` → 直连 Perplexity（`https://api.perplexity.ai`）
-- 40. `OPENROUTER_API_KEY` 或 `sk-or-...` → OpenRouter（`https://openrouter.ai/api/v1`）
-- 41. 未知的 key 格式 → OpenRouter（安全回退）
+- `PERPLEXITY_API_KEY` 或 `pplx-...` → 直连 Perplexity（`https://api.perplexity.ai`）
+- `OPENROUTER_API_KEY` 或 `sk-or-...` → OpenRouter（`https://openrouter.ai/api/v1`）
+- 未知密钥格式 → OpenRouter（安全回退）
 
-## 42. 模型
+## 模型
 
-- 43. `perplexity/sonar` — 快速问答 + 网页搜索
-- 44. `perplexity/sonar-pro`（默认）— 多步推理 + 网页搜索
-- 45. `perplexity/sonar-reasoning-pro` — 深度研究
+- `perplexity/sonar` — 带网络搜索的快速问答
+- `perplexity/sonar-pro`（默认） — 多步推理 + 网络搜索
+- `perplexity/sonar-reasoning-pro` — 深度研究
 
-46. 完整的 web_search 配置请参见 [Web tools](/tools/web)。
+请参阅 [Web 工具](/tools/web) 了解 web_search 配置详情。

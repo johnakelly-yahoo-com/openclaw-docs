@@ -1,26 +1,33 @@
 ---
-summary: "44. `openclaw status` 的 CLI 参考（诊断、探测、使用情况快照）"
 read_when:
-  - 45. 你想快速诊断频道健康状况 + 最近的会话接收方
-  - 46. 你想要一个可粘贴的“全部”状态用于调试
-title: "47. status"
+  - 你想快速诊断渠道健康状况 + 最近的会话接收者
+  - 你想获取可粘贴的"all"状态用于调试
+summary: "`openclaw status` 的 CLI 参考（诊断、探测、使用量快照）"
+title: status
+x-i18n:
+  generated_at: "2026-02-03T07:45:21Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: 2bbf5579c48034fc15c2cbd5506c50456230b17e4a74c06318968c590d8f1501
+  source_path: cli/status.md
+  workflow: 15
 ---
 
-# 48. `openclaw status`
+# `openclaw status`
 
-49. 用于频道 + 会话的诊断。
+渠道 + 会话的诊断。
 
 ```bash
-50. openclaw status
+openclaw status
 openclaw status --all
 openclaw status --deep
 openclaw status --usage
 ```
 
-Notes:
+注意事项：
 
-- `--deep` runs live probes (WhatsApp Web + Telegram + Discord + Google Chat + Slack + Signal).
-- Output includes per-agent session stores when multiple agents are configured.
-- Overview includes Gateway + node host service install/runtime status when available.
-- 30. 概览包含更新通道 + git SHA（用于源码检出）。
-- Update info surfaces in the Overview; if an update is available, status prints a hint to run `openclaw update` (see [Updating](/install/updating)).
+- `--deep` 运行实时探测（WhatsApp Web + Telegram + Discord + Google Chat + Slack + Signal）。
+- 当配置了多个智能体时，输出包含每个智能体的会话存储。
+- 概览包含 Gateway 网关 + 节点主机服务安装/运行时状态（如果可用）。
+- 概览包含更新渠道 + git SHA（用于源代码检出）。
+- 更新信息显示在概览中；如果有可用更新，status 会打印提示运行 `openclaw update`（参见[更新](/install/updating)）。

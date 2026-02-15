@@ -1,43 +1,36 @@
 ---
-summary: "32. `openclaw onboard` 的 CLI 参考（交互式引导向导）"
 read_when:
-  - 33. 你希望获得关于网关、工作区、认证、渠道和技能的引导式设置
-title: "34. onboard"
+  - 你想要 Gateway 网关、工作区、认证、渠道和 Skills 的引导式设置
+summary: "`openclaw onboard` 的 CLI 参考（交互式新手引导向导）"
+title: onboard
+x-i18n:
+  generated_at: "2026-02-03T07:45:00Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: a661049a6983233986a880a68440a3bcc6869ee2c4c6f5e9f3ab8ff973e22f60
+  source_path: cli/onboard.md
+  workflow: 15
 ---
 
-# 35. `openclaw onboard`
+# `openclaw onboard`
 
-36. 交互式引导向导（本地或远程 Gateway 设置）。
+交互式新手引导向导（本地或远程 Gateway 网关设置）。
 
-## 12. 相关指南
+相关内容：
 
-- 38. CLI 引导中心：[Onboarding Wizard (CLI)](/start/wizard)
-- 39. CLI 引导参考：[CLI Onboarding Reference](/start/wizard-cli-reference)
-- 40. CLI 自动化：[CLI Automation](/start/wizard-cli-automation)
-- 41. macOS 引导：[Onboarding (macOS App)](/start/onboarding)
+- 向导指南：[新手引导](/start/onboarding)
 
-## 42. 示例
+## 示例
 
 ```bash
-43. openclaw onboard
+openclaw onboard
 openclaw onboard --flow quickstart
 openclaw onboard --flow manual
 openclaw onboard --mode remote --remote-url ws://gateway-host:18789
 ```
 
-44. 流程说明：
+流程说明：
 
-- 45. `quickstart`：最少提示，自动生成网关令牌。
-- 46. `manual`：用于端口/绑定/认证的完整提示（`advanced` 的别名）。
-- 47. 最快开始首次聊天：`openclaw dashboard`（控制界面，无需设置渠道）。
-
-## 48. 常见后续命令
-
-```bash
-49. openclaw configure
-openclaw agents add <name>
-```
-
-<Note>
-50. `--json` 并不意味着非交互模式。 Use `--non-interactive` for scripts.
-</Note>
+- `quickstart`：最少提示，自动生成 Gateway 网关令牌。
+- `manual`：完整的端口/绑定/认证提示（`advanced` 的别名）。
+- 最快开始聊天：`openclaw dashboard`（控制 UI，无需渠道设置）。

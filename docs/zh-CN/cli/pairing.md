@@ -1,19 +1,26 @@
 ---
-summary: "CLI reference for `openclaw pairing` (approve/list pairing requests)"
 read_when:
-  - You’re using pairing-mode DMs and need to approve senders
-title: "pairing"
+  - 你正在使用配对模式私信并需要批准发送者
+summary: "`openclaw pairing` 的 CLI 参考（批准/列出配对请求）"
+title: pairing
+x-i18n:
+  generated_at: "2026-02-03T07:45:02Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: e0bc9707294463c95d13e0deb67d834cfad6a105ab44baf4c25592e5de65ddf5
+  source_path: cli/pairing.md
+  workflow: 15
 ---
 
 # `openclaw pairing`
 
-13. 批准或检查 DM 配对请求（适用于支持配对的渠道）。
+批准或检查私信配对请求（适用于支持配对的渠道）。
 
-Related:
+相关内容：
 
-- Pairing flow: [Pairing](/channels/pairing)
+- 配对流程：[配对](/channels/pairing)
 
-## Commands
+## 命令
 
 ```bash
 openclaw pairing list whatsapp

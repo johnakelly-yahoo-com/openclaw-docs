@@ -1,62 +1,67 @@
 ---
-summary: "Routing rules per channel (WhatsApp, Telegram, Discord, Slack) and shared context"
 read_when:
-  - Changing channel routing or inbox behavior
-title: "Channel Routing"
+  - 更改渠道路由或收件箱行为
+summary: 每个渠道（WhatsApp、Telegram、Discord、Slack）的路由规则及共享上下文
+title: 渠道路由
+x-i18n:
+  generated_at: "2026-02-01T20:22:21Z"
+  model: claude-opus-4-5
+  provider: pi
+  source_hash: 1a322b5187e32c82fc1e8aac02437e2eeb7ba84e7b3a1db89feeab1dcf7dbbab
+  source_path: channels/channel-routing.md
+  workflow: 14
 ---
 
 # 渠道与路由
 
-OpenClaw routes replies **back to the channel where a message came from**. The
-model does not choose a channel; routing is deterministic and controlled by the
-host configuration.
+OpenClaw 将回复**路由回消息来源的渠道**。模型不会选择渠道；路由是确定性的，由主机配置控制。
 
-## Key terms
+## 关键术语
 
-- **Channel**: `whatsapp`, `telegram`, `discord`, `slack`, `signal`, `imessage`, `webchat`.
-- **AccountId**: per‑channel account instance (when supported).
-- **AgentId**: an isolated workspace + session store (“brain”).
-- **SessionKey**: the bucket key used to store context and control concurrency.
+- **渠道**：`whatsapp`、`telegram`、`discord`、`slack`、`signal`、`imessage`、`webchat`。
+- **AccountId**：每个渠道的账户实例（在支持的情况下）。
+- **AgentId**：隔离的工作区 + 会话存储（"大脑"）。
+- **SessionKey**：用于存储上下文和控制并发的桶键。
 
-## Session key shapes (examples)
+## 会话键格式（示例）
 
-Direct messages collapse to the agent’s **main** session:
+私信会折叠到智能体的**主**会话：
 
-- `agent:<agentId>:<mainKey>` (default: `agent:main:main`)
+- `agent:<agentId>:<mainKey>`（默认：`agent:main:main`）
 
-Groups and channels remain isolated per channel:
+群组和渠道按渠道隔离：
 
-- Groups: `agent:<agentId>:<channel>:group:<id>`
-- Channels/rooms: `agent:<agentId>:<channel>:channel:<id>`
+- 群组：`agent:<agentId>:<channel>:group:<id>`
+- 渠道/房间：`agent:<agentId>:<channel>:channel:<id>`
 
-Threads:
+线程：
 
-- Slack/Discord threads append `:thread:<threadId>` to the base key.
-- Telegram forum topics embed `:topic:<topicId>` in the group key.
+- Slack/Discord 线程会在基础键后追加 `:thread:<threadId>`。
+- Telegram 论坛主题在群组键中嵌入 `:topic:<topicId>`。
 
-Examples:
+示例：
 
 - `agent:main:telegram:group:-1001234567890:topic:42`
 - `agent:main:discord:channel:123456:thread:987654`
 
-## Routing rules (how an agent is chosen)
+## 路由规则（如何选择智能体）
 
-Routing picks **one agent** for each inbound message:
+路由为每条入站消息选择**一个智能体**：
 
-1. **Exact peer match** (`bindings` with `peer.kind` + `peer.id`).
-2. **Guild match** (Discord) via `guildId`.
-3. **Team match** (Slack) via `teamId`.
-4. **Account match** (`accountId` on the channel).
-5. **Channel match** (any account on that channel).
-6. **Default agent** (`agents.list[].default`, else first list entry, fallback to `main`).
+1. **精确对端匹配**（`bindings` 中的 `peer.kind` + `peer.id`）。
+2. **Guild 匹配**（Discord）通过 `guildId`。
+3. **Team 匹配**（Slack）通过 `teamId`。
+4. **账户匹配**（渠道上的 `accountId`）。
+5. **渠道匹配**（该渠道上的任意账户）。
+6. **默认智能体**（`agents.list[].default`，否则取列表第一项，兜底为 `main`）。
 
-The matched agent determines which workspace and session store are used.
+匹配到的智能体决定使用哪个工作区和会话存储。
 
-## Broadcast groups (run multiple agents)
+## 广播组（运行多个智能体）
 
-Broadcast groups let you run **multiple agents** for the same peer **when OpenClaw would normally reply** (for example: in WhatsApp groups, after mention/activation gating).
+广播组允许你为同一对端运行**多个智能体**，**在 OpenClaw 正常回复时**触发（例如：在 WhatsApp 群组中，经过提及/激活门控之后）。
 
-Config:
+配置：
 
 ```json5
 {
@@ -68,14 +73,14 @@ Config:
 }
 ```
 
-See: [Broadcast Groups](/channels/broadcast-groups).
+参见：[广播组](/channels/broadcast-groups)。
 
-## Config overview
+## 配置概览
 
-- `agents.list`: named agent definitions (workspace, model, etc.).
-- `bindings`: map inbound channels/accounts/peers to agents.
+- `agents.list`：命名的智能体定义（工作区、模型等）。
+- `bindings`：将入站渠道/账户/对端映射到智能体。
 
-Example:
+示例：
 
 ```json5
 {
@@ -91,22 +96,22 @@ Example:
 
 ## 会话存储
 
-Session stores live under the state directory (default `~/.openclaw`):
+会话存储位于状态目录下（默认 `~/.openclaw`）：
 
 - `~/.openclaw/agents/<agentId>/sessions/sessions.json`
-- JSONL transcripts live alongside the store
+- JSONL 记录文件与存储位于同一目录
 
-You can override the store path via `session.store` and `{agentId}` templating.
+你可以通过 `session.store` 和 `{agentId}` 模板来覆盖存储路径。
 
-## WebChat behavior
+## WebChat 行为
 
-WebChat 会附加到**选定的代理**，并默认使用该代理的主会话。 因此，WebChat 让你可以在一个地方查看该代理的跨渠道上下文。
+WebChat 连接到**所选智能体**，并默认使用该智能体的主会话。因此，WebChat 让你可以在一个地方查看该智能体的跨渠道上下文。
 
 ## 回复上下文
 
-入站回复包括：
+入站回复包含：
 
-- 在可用时包含 `ReplyToId`、`ReplyToBody` 和 `ReplyToSender`。
-- 被引用的上下文会以 `[Replying to ...]` 块的形式追加到 `Body`。
+- `ReplyToId`、`ReplyToBody` 和 `ReplyToSender`（在可用时）。
+- 引用的上下文会以 `[Replying to ...]` 块的形式追加到 `Body` 中。
 
-这一行为在各个渠道中保持一致。
+这在所有渠道中保持一致。
