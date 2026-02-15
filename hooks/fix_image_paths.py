@@ -1,4 +1,4 @@
-"""MkDocs hook to rewrite absolute paths to relative ones and
+"""MkDocs hook for veiseule.ai — rewrite absolute paths to relative ones and
 replace the homepage with a clean, professional version.
 
 The OpenClaw docs use absolute paths like /assets/foo.png, /images/foo.png,
@@ -11,8 +11,8 @@ Additionally, the Mintlify docs use "slug-only" links (e.g., /showcase
 instead of /start/showcase). This hook expands those to full paths before
 converting to relative links.
 
-It also replaces the homepage (index.md) with a professional version
-that removes Mintlify components and novelty graphics.
+It also replaces the homepage (index.md) with the veiseule.ai branded
+version that removes Mintlify components and novelty graphics.
 
 Path calculation:
   MkDocs with use_directory_urls=true serves foo/bar.md at URL /foo/bar/
@@ -313,19 +313,19 @@ SLUG_MAP = {
 
 CLEAN_HOMEPAGE = r'''---
 summary: "OpenClaw is a multi-channel gateway for AI agents that runs on any OS."
-title: "OpenClaw Documentation"
+title: "OpenClaw Documentation — veiseule.ai"
 ---
 
 <p align="center">
     <img
-        src="/assets/opendocs-logo-light.png"
-        alt="OpenDocs"
+        src="/assets/veiseule-logo-light.png"
+        alt="veiseule.ai"
         width="600"
         class="dark-hidden"
     />
     <img
-        src="/assets/opendocs-logo-dark.png"
-        alt="OpenDocs"
+        src="/assets/veiseule-logo-dark.png"
+        alt="veiseule.ai"
         width="600"
         class="light-hidden"
     />
@@ -363,7 +363,7 @@ flowchart LR
 The Gateway is the single source of truth for sessions, routing, and channel connections.
 
 <p align="center">
-    <img src="/assets/opendocs-pipeline.png" alt="How OpenDocs Works" width="800" />
+    <img src="/assets/veiseule-pipeline.png" alt="How veiseule.ai Works" width="800" />
 </p>
 
 ## Quick start
@@ -422,7 +422,7 @@ Config lives at `~/.openclaw/openclaw.json`.
 ## Documentation in your language
 
 <p align="center">
-    <img src="/assets/opendocs-languages.png" alt="Documentation in 22 Languages" width="800" />
+    <img src="/assets/veiseule-languages.png" alt="Documentation in 22 Languages" width="800" />
 </p>
 
 ## Browse the documentation

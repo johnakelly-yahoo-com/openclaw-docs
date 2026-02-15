@@ -1,4 +1,4 @@
-/* Custom branding for OpenClaw translated docs */
+/* Custom branding for veiseule.ai — OpenClaw translated docs */
 /* Color scheme matched to blog.law-kelly.com */
 
 /* Blog palette reference:
@@ -100,7 +100,7 @@
   color: #0645AD;
 }
 
-/* Light/dark mode logo toggle for OpenDocs homepage */
+/* Light/dark mode logo toggle for veiseule.ai homepage */
 /* Light mode: show light logo, hide dark logo */
 [data-md-color-scheme="default"] img.dark-hidden {
   display: inline !important;
@@ -136,13 +136,13 @@
 }
 
 /* Homepage pipeline and language card graphics */
-.md-content img[alt="How OpenDocs Works"],
+.md-content img[alt="How veiseule.ai Works"],
 .md-content img[alt="Documentation in 22 Languages"] {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 1rem 0;
 }
-[data-md-color-scheme="slate"] .md-content img[alt="How OpenDocs Works"],
+[data-md-color-scheme="slate"] .md-content img[alt="How veiseule.ai Works"],
 [data-md-color-scheme="slate"] .md-content img[alt="Documentation in 22 Languages"] {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

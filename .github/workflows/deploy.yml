@@ -1,12 +1,9 @@
-name: Deploy MkDocs to GitHub Pages
+name: Deploy veiseule.ai to Cloudflare Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:  # Allow manual trigger from GitHub UI
-
-permissions:
-  contents: write
 
 jobs:
   deploy:
@@ -38,5 +35,12 @@ jobs:
             mkdocs-static-i18n \
             pymdown-extensions
 
-      - name: Build and deploy
-        run: mkdocs gh-deploy --force -f mkdocs.yml
+      - name: Build site
+        run: mkdocs build -f mkdocs.yml
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy site --project-name=veiseule

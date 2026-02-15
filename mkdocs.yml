@@ -1,6 +1,6 @@
-site_name: "OpenClaw Documentation"
-site_description: "OpenClaw documentation in 22 languages"
-site_url: "https://johnakelly-yahoo-com.github.io/openclaw-docs/"
+site_name: "veiseule.ai"
+site_description: "OpenClaw documentation in 22 languages — AI-powered community translations"
+site_url: "https://veiseule.ai/"
 site_author: "John Kelly"
 
 docs_dir: docs
@@ -155,77 +155,77 @@ markdown_extensions:
 extra:
   alternate:
     - name: English
-      link: /openclaw-docs/
+      link: /
       lang: en
     - name: 日本語
-      link: /openclaw-docs/ja/
+      link: /ja/
       lang: ja
     - name: 한국어
-      link: /openclaw-docs/ko/
+      link: /ko/
       lang: ko
     - name: 繁體中文
-      link: /openclaw-docs/zh-TW/
+      link: /zh-TW/
       lang: zh-TW
     - name: 简体中文
-      link: /openclaw-docs/zh-CN/
+      link: /zh-CN/
       lang: zh-CN
     - name: Español
-      link: /openclaw-docs/es/
+      link: /es/
       lang: es
     - name: Français
-      link: /openclaw-docs/fr/
+      link: /fr/
       lang: fr
     - name: Deutsch
-      link: /openclaw-docs/de/
+      link: /de/
       lang: de
     - name: Português (Brasil)
-      link: /openclaw-docs/pt-BR/
+      link: /pt-BR/
       lang: pt-BR
     - name: Tiếng Việt
-      link: /openclaw-docs/vi/
+      link: /vi/
       lang: vi
     - name: Svenska
-      link: /openclaw-docs/sv/
+      link: /sv/
       lang: sv
     - name: Filipino
-      link: /openclaw-docs/tl/
+      link: /tl/
       lang: tl
     - name: Nederlands
-      link: /openclaw-docs/nl/
+      link: /nl/
       lang: nl
     - name: اردو
-      link: /openclaw-docs/ur/
+      link: /ur/
       lang: ur
     - name: العربية
-      link: /openclaw-docs/ar/
+      link: /ar/
       lang: ar
     - name: हिन्दी
-      link: /openclaw-docs/hi/
+      link: /hi/
       lang: hi
     - name: Dansk
-      link: /openclaw-docs/da/
+      link: /da/
       lang: da
     - name: Polski
-      link: /openclaw-docs/pl/
+      link: /pl/
       lang: pl
     - name: ไทย
-      link: /openclaw-docs/th/
+      link: /th/
       lang: th
     - name: Türkçe
-      link: /openclaw-docs/tr/
+      link: /tr/
       lang: tr
     - name: မြန်မာ
-      link: /openclaw-docs/my/
+      link: /my/
       lang: my
     - name: Русский
-      link: /openclaw-docs/ru/
+      link: /ru/
       lang: ru
     - name: O'zbek
-      link: /openclaw-docs/uz/
+      link: /uz/
       lang: uz
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/openclaw/openclaw
+      link: https://github.com/veiseule
     - icon: material/translate
       link: https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17
   generator: false
@@ -234,6 +234,6 @@ extra_css:
   - stylesheets/extra.css
 
 copyright: >
-  Community translations maintained by
+  veiseule.ai — Community translations maintained by
   <a href="http://blog.law-kelly.com/2026/02/open-source-means-open-language.html">John Kelly</a>.
   Improve translations on <a href="https://crowdin.com/project/66aa453b091ff31e16a4cecfeef31b17">Crowdin</a>.
